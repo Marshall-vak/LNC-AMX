@@ -1,0 +1,37 @@
+Welcome
+1 - Press To Begin
+
+2 to 5 - unused
+
+Main Page
+6 - mic 1 inside
+7 - mic 1 outside
+8 - mic 2 inside
+9 - mic 2 outside
+11 to 16 - output select (left to right)
+21 to 30 - input select (left to right)
+
+16 to 20 - unused
+
+Shutdown Prompt
+100 - YES
+
+Projector Power Prompt
+101 - on button
+102 - of button
+103 - image mute
+
+Audio Power Prompt
+105 - Inside Audio On
+106 - Inside Audio Off
+107 - Outside Audio On
+108 - Outside Audio Off
+
+
+--------------- Address Codes ---------------
+Main Page
+1 - Inside Audio Status
+2 - Outside Audio Status
+
+Projector Power Prompt
+101 - Lamp Hours

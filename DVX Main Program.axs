@@ -11,10 +11,52 @@ PROGRAM_NAME='DVX Main Program'
 (***********************************************************)
 DEFINE_DEVICE
 
+// Master Controller
+dvCONSOLE = 0:1:0
+
+//gpio connections
+dvIO = 5001:17:0	// GPIO
+
+//relays
+dvRELAY = 5001:8:0      //Relays
+
+// RS-232 Connections
+dvCOM1 = 5001:1:0	// RS-232 port 1 
+dvCOM2 = 5001:2:0	// RS-232 port 2
+dvCOM3 = 5001:3:0	// RS-232 port 3 
+dvCOM4 = 5001:4:0	// RS-232 port 4
+dvCOM3 = 5001:5:0	// RS-232 port 5 
+dvCOM4 = 5001:6:0	// RS-232 port 6
+
+//internal switcher connection
+dvDVXSW = 5002:1:0	// Switcher
+dvSWV = 5002:1:8	// Switcher Video
+dvSWA = 5002:1:10	// Switcher Audio
+
+//Video outputs
+dvHdmi1 = 5002:1:0
+dvHdmi2 = 5002:2:0
+dvHdmi3 = 5002:3:0
+dvHdmi4 = 5002:4:0
+
+//DxLink DVX in/out ports
+dvDvxDxLinkIn1 = 5002:1:0
+dvDvxDxLinkIn2 = 5002:2:0
+dvDvxDxLinkOut1 = 5002:3:0
+dvDvxDxLinkOut2 = 5002:4:0
+
+
+//html5 webpannel
+vdvSwitcher = 41001:1:0;
+
 (***********************************************************)
 (*               CONSTANT DEFINITIONS GO BELOW             *)
 (***********************************************************)
 DEFINE_CONSTANT
+DEV dvTPMaster[] = { }
+DEV dvHdmiMaster[] = { dvHdmi1, dvHdmi2, dvHdmi3, dvHdmi4 }
+DEV dvDvxDxlinkInMaster[] = { dvDvxDxLinkIn1, dvDvxDxLinkIn2 }
+DEV dvDvxDxLinkOutMaster[] = { dvDvxDxLinkOut1, dvDvxDxLinkOut2 }
 
 (***********************************************************)
 (*              DATA TYPE DEFINITIONS GO BELOW             *)
@@ -78,11 +120,26 @@ DEFINE_MODULE
 (***********************************************************)
 DEFINE_EVENT
 
-//DxLink
-DATA_EVENT[dvDxMaster]
+// Touch Pannel Startup Program
+DATA_EVENT[dvTPMaster]
 {
-    online: {
-	SEND_STRING dvCONSOLE, "'A DxLink Box Came online: ', devToString(Data.Device)"
+    ONLINE:
+    {
+	//setup touch pannel
+	moderoDisableAllPopups(Data.Device)
+	
+	//set pannel passwords
+	moderoSetPageFlipPassword(Data.Device, itoa(0), itoa(1988))
+	moderoSetPageFlipPassword(Data.Device, itoa(1), itoa(1988))
+	moderoSetPageFlipPassword(Data.Device, itoa(2), itoa(1950))
+	
+	
+	//enable touch pannel
+	moderoSetPage('Welcome')
+	moderoBeepDouble(Data.Device)
+	moderoEnablePopup(Data.Device, 'Online')
+	
+	SEND_STRING dvCONSOLE, "'a TP came Online:', devToString(Data.Device)"
     }
 }
 

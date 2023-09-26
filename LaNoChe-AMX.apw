@@ -136,13 +136,75 @@
 <UserName></UserName>
 <Password></Password>
 <Comments></Comments>
+<File CompileType="Netlinx" Type="Include"><Identifier>debug</Identifier>
+<FilePathName>..\House-Amx\includes\debug.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Other"><Identifier>device-ids</Identifier>
+<FilePathName>device-ids.txt</FilePathName>
+<Comments></Comments>
+<MasterDirectory>\</MasterDirectory>
+</File>
 <File CompileType="Netlinx" Type="Source"><Identifier>DVX Main Program</Identifier>
 <FilePathName>DVX Main Program.axs</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-device-control</Identifier>
+<FilePathName>includes\amx-device-control.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-dvx-api</Identifier>
+<FilePathName>includes\amx-dvx-api.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-dvx-control</Identifier>
+<FilePathName>includes\amx-dvx-control.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-dvx-listener</Identifier>
+<FilePathName>includes\amx-dvx-listener.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-dxlink-api</Identifier>
+<FilePathName>includes\amx-dxlink-api.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-dxlink-control</Identifier>
+<FilePathName>includes\amx-dxlink-control.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-dxlink-listener</Identifier>
+<FilePathName>includes\amx-dxlink-listener.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-modero-api</Identifier>
+<FilePathName>includes\amx-modero-api.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-modero-control</Identifier>
+<FilePathName>includes\amx-modero-control.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-modero-listener</Identifier>
+<FilePathName>includes\amx-modero-listener.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>common</Identifier>
+<FilePathName>includes\common.axi</FilePathName>
 <Comments></Comments>
 </File>
 <File CompileType="Netlinx" Type="DUET"><Identifier>DvxSwitcherDashboard_dr1_0_0</Identifier>
 <FilePathName>modules\DvxSwitcherDashboard_dr1_0_0.jar</FilePathName>
 <Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="TP4"><Identifier>LNC-AMX</Identifier>
+<FilePathName>panel\LNC-AMX.TP4</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Other"><Identifier>ui-channel-codes</Identifier>
+<FilePathName>ui-channel-codes.txt</FilePathName>
+<Comments></Comments>
+<MasterDirectory>\</MasterDirectory>
 </File>
 </System>
 <System IsActive="false" Platform="Netlinx" Transport="Serial" TransportEx="Serial"><Identifier>DGX</Identifier>
@@ -160,8 +222,44 @@
 <UserName></UserName>
 <Password></Password>
 <Comments></Comments>
+<File CompileType="Netlinx" Type="Include"><Identifier>debug</Identifier>
+<FilePathName>..\House-Amx\includes\debug.axi</FilePathName>
+<Comments></Comments>
+</File>
 <File CompileType="Netlinx" Type="Source"><Identifier>DGX Main Program</Identifier>
 <FilePathName>DGX Main Program.axs</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-device-control</Identifier>
+<FilePathName>includes\amx-device-control.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-dgx-api</Identifier>
+<FilePathName>includes\amx-dgx-api.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-dgx-control</Identifier>
+<FilePathName>includes\amx-dgx-control.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-dgx-listener</Identifier>
+<FilePathName>includes\amx-dgx-listener.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-dxlink-api</Identifier>
+<FilePathName>includes\amx-dxlink-api.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-dxlink-control</Identifier>
+<FilePathName>includes\amx-dxlink-control.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>amx-dxlink-listener</Identifier>
+<FilePathName>includes\amx-dxlink-listener.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>common</Identifier>
+<FilePathName>includes\common.axi</FilePathName>
 <Comments></Comments>
 </File>
 </System>

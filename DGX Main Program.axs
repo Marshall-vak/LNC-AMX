@@ -8,11 +8,44 @@ PROGRAM_NAME='DGX Main Program'
 (*          DEVICE NUMBER DEFINITIONS GO BELOW             *)
 (***********************************************************)
 DEFINE_DEVICE
+// Master Controller
+dvCONSOLE = 1:1:0
+
+//DxLink DVX in/out ports
+//dvDvxDxLinkIn1 = 5002:1:0
+//dvDvxDxLinkIn2 = 5002:2:0
+//dvDvxDxLinkOut1 = 5002:3:0
+//dvDvxDxLinkOut2 = 5002:4:0
+
+//DxLink TX Boxes
+dvDxLinkTx1 = 20001:1:0
+dvDxLinkTx2 = 20002:1:0
+dvDxLinkTx3 = 20003:1:0
+dvDxLinkTx4 = 20004:1:0
+dvDxLinkTx5 = 20005:1:0
+dvDxLinkTx6 = 20006:1:0
+dvDxLinkTx7 = 20007:1:0
+dvDxLinkTx8 = 20008:1:0
+
+//DxLink RX Boxes
+dvDxLinkRx1 = 20501:1:0
+dvDxLinkRx2 = 20502:1:0
+dvDxLinkRx3 = 20503:1:0
+dvDxLinkRx4 = 20504:1:0
+dvDxLinkRx5 = 20505:1:0
+dvDxLinkRx6 = 20506:1:0
+dvDxLinkRx7 = 20507:1:0
+dvDxLinkRx8 = 20508:1:0
 
 (***********************************************************)
 (*               CONSTANT DEFINITIONS GO BELOW             *)
 (***********************************************************)
 DEFINE_CONSTANT
+
+//Device Groups
+DEV dvDxLinkTxMaster[] = { dvDxLinkTx1, dvDxLinkTx2, dvDxLinkTx3, dvDxLinkTx4, dvDxLinkTx5, dvDxLinkTx6, dvDxLinkTx7, dvDxLinkTx8 }
+DEV dvDxLinkRxMaster[] = { dvDxLinkRx1, dvDxLinkRx2, dvDxLinkRx3, dvDxLinkRx4, dvDxLinkRx5, dvDxLinkRx6, dvDxLinkRx7, dvDxLinkRx8 }
+DEV dvDxLinkMaster[] = { dvDxLinkTxMaster, dvDxLinkRxMaster }
 
 (***********************************************************)
 (*              DATA TYPE DEFINITIONS GO BELOW             *)
@@ -76,10 +109,18 @@ DEFINE_MODULE
 DEFINE_EVENT
 
 //DxLink
-DATA_EVENT[dvDxMaster]
+DATA_EVENT[dvDxLinkTxMaster]
 {
     online: {
-	SEND_STRING dvCONSOLE, "'A DxLink Box Came online: ', devToString(Data.Device)"
+	SEND_STRING dvCONSOLE, "'A DxLink TX Box Came online: ', devToString(Data.Device)"
+    }
+}
+
+//DxLink
+DATA_EVENT[dvDxLinkRxMaster]
+{
+    online: {
+	SEND_STRING dvCONSOLE, "'A DxLink RX Box Came online: ', devToString(Data.Device)"
     }
 }
 
