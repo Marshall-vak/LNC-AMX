@@ -25,8 +25,8 @@ dvCOM1 = 5001:1:0	// RS-232 port 1
 dvCOM2 = 5001:2:0	// RS-232 port 2
 dvCOM3 = 5001:3:0	// RS-232 port 3 
 dvCOM4 = 5001:4:0	// RS-232 port 4
-dvCOM3 = 5001:5:0	// RS-232 port 5 
-dvCOM4 = 5001:6:0	// RS-232 port 6
+dvCOM5 = 5001:5:0	// RS-232 port 5 
+dvCOM6 = 5001:6:0	// RS-232 port 6
 
 //internal switcher connection
 dvDVXSW = 5002:1:0	// Switcher
@@ -45,8 +45,14 @@ dvDvxDxLinkIn2 = 5002:2:0	//DxLink Input 2
 dvDvxDxLinkOut1 = 5002:3:0	//DxLink Output 1
 dvDvxDxLinkOut2 = 5002:4:0	//DxLink Output 2
 
+//Touch Panels
+dvTpServerRoom = 11:1:0		//Server Room / av room touch panel
+dvTpPodiumArea = 12:1:0		//Podium / Projector screen touch panel
+dvTpDvdPlayerArea = 13:1:0	//Dvd player area touch panel
+dvTpOldManTable = 14:1:0	//Old Man table touch panel
 
-//html5 webpannel
+
+//html5 webpanel
 vdvSwitcher = 41001:1:0;	// Virtual Device
 
 (***********************************************************)
@@ -58,7 +64,7 @@ DEFINE_CONSTANT
 INTEGER WelcomePageStartButton[] = { 1 }
 
 //All Welcome Page Buttons
-INTEGER WelcomePageMaster[] = { WelcomePageStartButton }
+INTEGER WelcomePageMaster[] = { 1 } //WelcomePageStartButton }
 
 
 //Output Select Buttons
@@ -76,7 +82,7 @@ INTEGER MicInsideButtons[] = { 6, 8 }
 INTEGER MicOnebuttons[] = { 6, 7 }
 
 //Button codes on the Main Page
-INTEGER MainPageMaster[] = { OutputButtons, InputButtons, MicButtons }
+INTEGER MainPageMaster[] = { 11, 12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 6, 7, 8, 9 }//OutputButtons, InputButtons, MicOutputButtons }
 
 
 //Projector Power buttons
@@ -89,7 +95,7 @@ INTEGER ProjectorPowerOnbutton[] = { 101 }
 INTEGER ProjectorImageMuteButtons[] = { 103 }
 
 //all buttons on the Projector Popup page
-INTEGER ProjectorPopupMaster[] = { ProjectorPowerButtons, ProjectorImageMuteButtons }
+INTEGER ProjectorPopupMaster[] = { 101, 102, 103 }//ProjectorPowerButtons, ProjectorImageMuteButtons }
 
 
 //Audio Popup Power Buttons
@@ -101,7 +107,7 @@ INTEGER AudioPowerOnButtons[] = { 105, 107 }
 INTEGER AudioInsideButtons[] = { 105, 106 }
 
 //All Buttons on the audio popup page
-INTEGER AudioPopupMaster[] = { AudioPowerButtons }
+INTEGER AudioPopupMaster[] = { 105, 106, 107, 108 }//AudioPowerButtons }
 
 
 //Audio Popup Power Buttons
@@ -111,12 +117,12 @@ INTEGER ShutDownButtons[] = { 100 }
 INTEGER ShutDownYesButtons[] = { 100 }
 
 //All Buttons on the Shutdown System Page
-INTEGER ShutdownPopupMaster[] = { ShutDownButtons }
+INTEGER ShutdownPopupMaster[] = { 100 }//ShutDownButtons }
 
 
 
-//Group of all touch pannels connected to the master
-DEV dvTPMaster[] = { }
+//Group of all touch panels connected to the master
+DEV dvTPMaster[] = { dvTpServerRoom, dvTpPodiumArea, dvTpDvdPlayerArea, dvTpOldManTable }
 
 //Group of all HDMI outputs on the DVX
 DEV dvHdmiMaster[] = { dvHdmi1, dvHdmi2, dvHdmi3, dvHdmi4 }
@@ -202,7 +208,7 @@ DEFINE_FUNCTION fnSetOutsideAudioPower(INTEGER State){
 DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State){
     
     if (MicNumber == 1){
-	INTEGER MicOneState = State
+	MicOneState = State
 	
 	if (State == 1){
 	    //Switch Mic one to outside audio device here
@@ -218,7 +224,7 @@ DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State){
     }
     
     
-    INTEGER MicTwoState = State
+    MicTwoState = State
 	
     if (State == 1){
 	//Switch Mic two to outside audio device here
@@ -267,22 +273,22 @@ DEFINE_MODULE
 (***********************************************************)
 DEFINE_EVENT
 
-// Touch Pannel Startup Program
+// Touch Panel Startup Program
 DATA_EVENT[dvTPMaster]
 {
     ONLINE:
     {
-	//setup touch pannel
+	//setup touch panel
 	moderoDisableAllPopups(Data.Device)
 	
-	//set pannel passwords
+	//set panel passwords
 	//moderoSetPageFlipPassword(Data.Device, itoa(0), itoa(1988))
 	//moderoSetPageFlipPassword(Data.Device, itoa(1), itoa(1988))
 	//moderoSetPageFlipPassword(Data.Device, itoa(2), itoa(1950))
 	
 	
-	//enable touch pannel
-	moderoSetPage('Welcome')
+	//enable touch panel
+	moderoSetPage(Data.Device, 'Welcome')
 	moderoBeepDouble(Data.Device)
 	moderoEnablePopup(Data.Device, 'Online')
 	
@@ -344,16 +350,12 @@ DATA_EVENT[dvTPMaster]
 			fnSetMicState(2, 1)
 		    }
 		}
+	    } else {
 	    
-		//return if its a mic related button so we dont continue
-		//we do this cause the input output system needs to be unique
-		RETURN
+		print("'Button Pressed Adressing Input Selection'", false);
+	    
+		print("'==================[ implement me ]=================='", false);
 	    }
-	    
-	    print("'Button Pressed Adressing Input Selection'", false);
-	    
-	    print("'==================[ implement me ]=================='", false);
-	    
 	}
 	
 	// if the pressed button is in the ProjectorPopupMaster group (table) then run the code
@@ -460,7 +462,7 @@ DATA_EVENT[dvTPMaster]
     }
  }
 
-//html5 webpannel
+//html5 webpanel
 data_event[vdvSwitcher]
 {
     online: 
@@ -499,8 +501,5 @@ DEFINE_PROGRAM
 (*         !!!  DO NOT PUT ANY CODE BELOW THIS COMMENT  !!!      *)
 (*                                                               *)
 (*****************************************************************)
-
-
-**************************)
 
 

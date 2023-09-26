@@ -140,12 +140,17 @@
 <FilePathName>..\House-Amx\includes\debug.axi</FilePathName>
 <Comments></Comments>
 </File>
+<File CompileType="Netlinx" Type="Other"><Identifier>connections</Identifier>
+<FilePathName>connections.txt</FilePathName>
+<Comments></Comments>
+<MasterDirectory>\</MasterDirectory>
+</File>
 <File CompileType="Netlinx" Type="Other"><Identifier>device-ids</Identifier>
 <FilePathName>device-ids.txt</FilePathName>
 <Comments></Comments>
 <MasterDirectory>\</MasterDirectory>
 </File>
-<File CompileType="Netlinx" Type="Source"><Identifier>DVX Main Program</Identifier>
+<File CompileType="Netlinx" Type="MasterSrc"><Identifier>DVX Main Program</Identifier>
 <FilePathName>DVX Main Program.axs</FilePathName>
 <Comments></Comments>
 </File>
@@ -226,7 +231,7 @@
 <FilePathName>..\House-Amx\includes\debug.axi</FilePathName>
 <Comments></Comments>
 </File>
-<File CompileType="Netlinx" Type="Source"><Identifier>DGX Main Program</Identifier>
+<File CompileType="Netlinx" Type="MasterSrc"><Identifier>DGX Main Program</Identifier>
 <FilePathName>DGX Main Program.axs</FilePathName>
 <Comments></Comments>
 </File>

@@ -50,7 +50,7 @@ DEV dvDxLinkTxMaster[] = { dvDxLinkTx1, dvDxLinkTx2, dvDxLinkTx3, dvDxLinkTx4, d
 DEV dvDxLinkRxMaster[] = { dvDxLinkRx1, dvDxLinkRx2, dvDxLinkRx3, dvDxLinkRx4, dvDxLinkRx5, dvDxLinkRx6, dvDxLinkRx7, dvDxLinkRx8 }
 
 //Group of all DxLink Link boxes
-DEV dvDxLinkMaster[] = { dvDxLinkTxMaster, dvDxLinkRxMaster }
+DEV dvDxLinkMaster[] = { dvDxLinkTx1, dvDxLinkTx2, dvDxLinkTx3, dvDxLinkTx4, dvDxLinkTx5, dvDxLinkTx6, dvDxLinkTx7, dvDxLinkTx8, dvDxLinkRx1, dvDxLinkRx2, dvDxLinkRx3, dvDxLinkRx4, dvDxLinkRx5, dvDxLinkRx6, dvDxLinkRx7, dvDxLinkRx8 }//dvDxLinkTxMaster, dvDxLinkRxMaster }
 
 (***********************************************************)
 (*              DATA TYPE DEFINITIONS GO BELOW             *)
