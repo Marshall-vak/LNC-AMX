@@ -1,0 +1,2 @@
+DVX Relay 1 - Power Switcher for Inside Amps
+DVX Relay 2 - Power Switcher for Outside Amp
