@@ -81,8 +81,8 @@ INTEGER MicInsideButtons[] = { 6, 8 }
 //The other sider of the grid
 INTEGER MicOnebuttons[] = { 6, 7 }
 
-//Button codes on the Main Page
-INTEGER MainPageMaster[] = { 11, 12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 6, 7, 8, 9 }//OutputButtons, InputButtons, MicOutputButtons }
+//Button codes on the Main Page ( All of the above )
+INTEGER MainPageMaster[] = { 11, 12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 6, 7, 8, 9 }
 
 
 //Projector Power buttons
@@ -91,33 +91,45 @@ INTEGER ProjectorPowerButtons[] = { 101, 102 }
 //Again think of a grid
 INTEGER ProjectorPowerOnbutton[] = { 101 }
 
-//Projector Image Mute button
-INTEGER ProjectorImageMuteButtons[] = { 103 }
+//Projector Hour Refresh Button
+INTEGER ProjectorHourRefreshbutton[] = { 104 }
 
-//all buttons on the Projector Popup page
-INTEGER ProjectorPopupMaster[] = { 101, 102, 103 }//ProjectorPowerButtons, ProjectorImageMuteButtons }
+//Projector Image Mute button
+INTEGER ProjectorImageMuteButtons[] = { 105 }
+
+//Projector Screen Buttons
+INTEGER ProjectorScreenButtons[] = { 103, 106 }
+//When a power button is pressed we can check if its in the on table and if its not then its off
+//Again think of a grid (again)
+INTEGER ProjectorScreenUpButtons[] = { 103 }
+
+//all buttons on the Projector Popup page ( All of the above )
+INTEGER ProjectorPopupMaster[] = { 101, 102, 103, 104, 105, 106 }
 
 
 //Audio Popup Power Buttons
-INTEGER AudioPowerButtons[] = { 105, 106, 107, 108 }
+INTEGER AudioPowerButtons[] = { 110, 111, 112, 113 }
 //When a power button is pressed we can check if its in the on table and if its not then its off
-//Again think of a grid (again)
-INTEGER AudioPowerOnButtons[] = { 105, 107 }
+//Again think of a grid (again [again])
+INTEGER AudioPowerOnButtons[] = { 110, 112 }
 //The Other Side of the table
-INTEGER AudioInsideButtons[] = { 105, 106 }
+INTEGER AudioInsideButtons[] = { 110, 111 }
 
-//All Buttons on the audio popup page
-INTEGER AudioPopupMaster[] = { 105, 106, 107, 108 }//AudioPowerButtons }
+//All Buttons on the audio popup page ( All of the above )
+INTEGER AudioPopupMaster[] = { 105, 106, 107, 108 }
 
 
 //Audio Popup Power Buttons
 INTEGER ShutDownButtons[] = { 100 }
 //When a shutdown button is pressed we can check if its in the yes table and if its not then its no
-//Again think of a grid (again [again])
+//Again think of a grid (again [again {again}])
 INTEGER ShutDownYesButtons[] = { 100 }
 
-//All Buttons on the Shutdown System Page
-INTEGER ShutdownPopupMaster[] = { 100 }//ShutDownButtons }
+//Shutdown Abort Button
+INTEGER ShutdownAbortButton[] = { 120 }
+
+//All Buttons on the Shutdown System Page ( All of the above )
+INTEGER ShutdownPopupMaster[] = { 100 }
 
 
 
@@ -282,9 +294,12 @@ DATA_EVENT[dvTPMaster]
 	moderoDisableAllPopups(Data.Device)
 	
 	//set panel passwords
-	//moderoSetPageFlipPassword(Data.Device, itoa(0), itoa(1988))
-	//moderoSetPageFlipPassword(Data.Device, itoa(1), itoa(1988))
-	//moderoSetPageFlipPassword(Data.Device, itoa(2), itoa(1950))
+	moderoSetPageFlipPassword(Data.Device, '1', '1950')
+	moderoSetPageFlipPassword(Data.Device, '2', '1988')
+	moderoSetPageFlipPassword(Data.Device, '3', '1988')
+	moderoSetPageFlipPassword(Data.Device, '4', '1988')
+	//pannel admin password
+	moderoSetPageFlipPassword(Data.Device, '5', '1988')
 	
 	
 	//enable touch panel
@@ -387,6 +402,33 @@ DATA_EVENT[dvTPMaster]
 		
 		//for future implementation
 		print("'==================[ implement me ]=================='", false);
+	    }
+	    
+	    //if the button is a hour refresh button continue
+	    if (fnGetIndex(ProjectorHourRefreshbutton, BUTTON.INPUT.CHANNEL) != 0){
+		print("'Projector Hour Refresh Button Pressed'", false);
+		
+		//for future implementation
+		print("'==================[ implement me ]=================='", false);
+	    }
+	    
+	    //if the button is a Screen Button button continue
+	    if (fnGetIndex(ProjectorScreenButtons, BUTTON.INPUT.CHANNEL) != 0){
+		print("'Projector Screen Button Pressed'", false);
+	    
+		if (fnGetIndex(ProjectorScreenUpButtons, BUTTON.INPUT.CHANNEL) != 0){
+		    //if the button is an up button
+		    print("'Sending The Projector Screen Up'", false);
+		    
+		    //for future implementation
+		    print("'==================[ implement me ]=================='", false);
+		} else {
+		    //if the button not a up button then its a down button
+		    print("'Sending The Projector Screen Down'", false);
+		    
+		    //for future implementation
+		    print("'==================[ implement me ]=================='", false);
+		}
 	    }
 	}
 	
