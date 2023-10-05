@@ -171,6 +171,9 @@ INTEGER MicOneState = 0 // Default to inside state
 // 0 is inside 1 is outside
 INTEGER MicTwoState = 1 // Default to outside state
 
+//Global Projector Screen State Variable
+INTEGER ProjectorScreenState = 0
+
 (***********************************************************)
 (*              Function DEFINITIONS GO BELOW              *)
 (***********************************************************)
@@ -187,31 +190,31 @@ DEFINE_FUNCTION INTEGER fnGetIndex(INTEGER nArray[], INTEGER nValue){
 
 }
 
-//Function for turning on or off the Inside audio
+// Function for turning on or off the Inside audio
 DEFINE_FUNCTION fnSetInsideAudioPower(INTEGER State){
     
-    //set the global state to the current state
+    // set the global state to the current state
     InsideAudioState = State
     
-    //if the state is 1 (aka on) turn on relay 1 and stop the rest of the function from running
+    // if the state is 1 (aka on) turn on relay 1 and stop the rest of the function from running
     IF (State = 1) RETURN ON[dvRELAY, 1]
     
-    //turn off relay 1
+    // turn off relay 1
     OFF[dvRELAY, 1]
     
 }
 
-//Repeat for outside
-//Function for turning on or off the Outside audio
+// Repeat for outside
+// Function for turning on or off the Outside audio
 DEFINE_FUNCTION fnSetOutsideAudioPower(INTEGER State){
     
-    //set the global state to the current state
+    // set the global state to the current state
     OutsideAudioState = State
     
-    //if the state is 1 (aka on) turn on relay 2 and stop the rest of the function from running
+    // if the state is 1 (aka on) turn on relay 2 and stop the rest of the function from running
     IF (State = 1) RETURN ON[dvRELAY, 2]
     
-    //turn off relay 2
+    // turn off relay 2
     OFF[dvRELAY, 2]
     
 }
@@ -249,6 +252,50 @@ DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State){
     }
 }
 
+// DVX Relay 3 - Projector Screen Contacts (UP)
+// DVX Relay 4 - Projector Screen Contacts (DOWN)
+
+// States:
+// 00 - Startup
+// 01 - Projector Screen Up
+// 02 - Projector Screen Down
+// 10 - Rejected Screen Locked
+// 11 - Locked Up (Wall Switch Up)
+// 12 - Locked Down (Wall Switch Down)
+// 20 - Reserved
+// 21 - Projector Screen Rising
+// 22 - Projector Screen Lowering
+
+DEFINE_FUNCTION fnSetProjectorScreenState(INTEGER State)
+{
+    if (State >= 10){
+	return 10
+    }
+
+    if (State < 10){
+	ProjectorScreenState = State
+    }
+
+
+}
+
+// System Reset Function
+DEFINE_FUNCTION fnSetProjectorScreenState(INTEGER State)
+{
+    print("'Resetting All Systems'", false);
+    
+    // 1 is on 0 is off
+    fnSetInsideAudioPower(0)
+    fnSetOutsideAudioPower(0)
+    
+    // State 0 is inside and State 1 is outside
+    // fnSetMicState(INTEGER MicNumber, INTEGER State)
+    fnSetMicState(1, 0)
+    fnSetMicState(2, 1)
+    
+    
+}
+
 (***********************************************************)
 (*               LATCHING DEFINITIONS GO BELOW             *)
 (***********************************************************)
@@ -284,6 +331,53 @@ DEFINE_MODULE
 (*                THE EVENTS GO BELOW                      *)
 (***********************************************************)
 DEFINE_EVENT
+
+// Set IO To detect a pull to low as active (low as in io pin to GND)
+DATA_EVENT[dvIO]
+{
+    send_command dvIO, 'SET INPUT 1 LOW' // DVX IO 1 - Projector Screen Wall Switch Pos 1 (UP)
+    send_command dvIO, 'SET INPUT 2 LOW' // DVX IO 2 - Projector Screen Wall Switch Pos 2 (DOWN)
+}
+
+// Detect Pulls (Changes) on the io pin 1 (Projector Screen Wall Switch [UP])
+CHANNEL_EVENT[dvIO, 1]
+{
+    ON:
+    {
+	print("'dvIO 1 Pulled Low (ON)'", false);
+	
+	// Set the projector screen state to 11 - Locked Up (Wall Switch Up)
+	fnSetProjectorScreenState(11)
+    }
+    
+    OFF:
+    {
+	print("'dvIO 1 Pulled High (OFF)'", false);
+	
+	// Set the current state to the current state - 10 aka unlocking the screen state
+	fnSetProjectorScreenState(ProjectorScreenState - 10)
+    }
+}
+
+// Detect Pulls (Changes) on the io pin 2 (Projector Screen Wall Switch [DOWN])
+CHANNEL_EVENT[dvIO, 2]
+{
+    ON:
+    {
+	print("'dvIO 2 Pulled Low (ON)'", false);
+	
+	// Set the projector screen state to 12 - Locked Down (Wall Switch Down)
+	fnSetProjectorScreenState(12)
+    }
+    
+    OFF:
+    {
+	print("'dvIO 2 Pulled High (OFF)'", false);
+	
+	// Set the current state to the current state - 10 aka unlocking the screen state
+	fnSetProjectorScreenState(ProjectorScreenState - 10)
+    }
+}
 
 // Touch Panel Startup Program
 DATA_EVENT[dvTPMaster]
@@ -422,6 +516,7 @@ DATA_EVENT[dvTPMaster]
 		    
 		    //for future implementation
 		    print("'==================[ implement me ]=================='", false);
+		    
 		} else {
 		    //if the button not a up button then its a down button
 		    print("'Sending The Projector Screen Down'", false);
@@ -480,16 +575,8 @@ DATA_EVENT[dvTPMaster]
 	    
 	    // if the button is in the table then its a yes
 	    if (fnGetIndex(ShutDownYesButtons, BUTTON.INPUT.CHANNEL) != 0){
-		print("'Resetting All Systems'", false);
+		// Call System reset
 		
-		//1 is on 0 is off
-		fnSetInsideAudioPower(0)
-		fnSetOutsideAudioPower(0)
-		
-		// State 0 is inside and State 1 is outside
-		// fnSetMicState(INTEGER MicNumber, INTEGER State)
-		fnSetMicState(1, 0)
-		fnSetMicState(2, 1)
 	    } else {
 		//else then it was a no
 		print("'Aborting System Reset!'", false);

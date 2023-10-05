@@ -1,3 +1,5 @@
+Non Standard Device Numbers
+
 0 - amx dvx
 1 - amx dgx
 0 to 100 - touch pannels
