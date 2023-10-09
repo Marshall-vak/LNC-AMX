@@ -46,11 +46,15 @@ dvDvxDxLinkOut1 = 5002:3:0	//DxLink Output 1
 dvDvxDxLinkOut2 = 5002:4:0	//DxLink Output 2
 
 //Touch Panels
-dvTpServerRoom = 11:1:0		//Server Room / av room touch panel
-dvTpPodiumArea = 12:1:0		//Podium / Projector screen touch panel
-dvTpDvdPlayerArea = 13:1:0	//Dvd player area touch panel
-dvTpOldManTable = 14:1:0	//Old Man table touch panel
+dvTpServerRoom = 10:1:0		//Server Room / av room touch panel
+dvTpPodiumArea = 11:1:0		//Podium / Projector screen touch panel
+dvTpDvdPlayerArea = 12:1:0	//Dvd player area touch panel
+dvTpOldManTable = 13:1:0	//Old Man table touch panel
 
+//projector
+vdvOptomaTH1060 = 41001:1:0  // The COMM module should use this as its duet device
+// Serial RS-232 Control
+dvOptomaTH1060 = 5001:2:0 // This device should be used as the physical device by the COMM module
 
 //html5 webpanel
 vdvSwitcher = 41001:1:0;	// Virtual Device
@@ -197,10 +201,12 @@ DEFINE_FUNCTION fnSetInsideAudioPower(INTEGER State){
     InsideAudioState = State
     
     // if the state is 1 (aka on) turn on relay 1 and stop the rest of the function from running
-    IF (State = 1) RETURN ON[dvRELAY, 1]
-    
-    // turn off relay 1
-    OFF[dvRELAY, 1]
+    IF (State = 1) {
+	ON[dvRELAY, 1]
+    } else {
+	// turn off relay 1
+	OFF[dvRELAY, 1]
+    }
     
 }
 
@@ -212,10 +218,12 @@ DEFINE_FUNCTION fnSetOutsideAudioPower(INTEGER State){
     OutsideAudioState = State
     
     // if the state is 1 (aka on) turn on relay 2 and stop the rest of the function from running
-    IF (State = 1) RETURN ON[dvRELAY, 2]
-    
-    // turn off relay 2
-    OFF[dvRELAY, 2]
+    IF (State = 1) {
+	ON[dvRELAY, 2]
+    } else {
+	// turn off relay 2
+	OFF[dvRELAY, 2]
+    }
     
 }
 
@@ -234,8 +242,6 @@ DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State){
 	    
 	    print("'==================[ implement me ]=================='", false);
 	}
-	
-	RETURN
     }
     
     
@@ -269,7 +275,7 @@ DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State){
 DEFINE_FUNCTION fnSetProjectorScreenState(INTEGER State)
 {
     if (State >= 10){
-	return 10
+	//return 10
     }
 
     if (State < 10){
@@ -280,7 +286,7 @@ DEFINE_FUNCTION fnSetProjectorScreenState(INTEGER State)
 }
 
 // System Reset Function
-DEFINE_FUNCTION fnSetProjectorScreenState(INTEGER State)
+DEFINE_FUNCTION fnResetSystem()
 {
     print("'Resetting All Systems'", false);
     
@@ -322,10 +328,13 @@ print("'Starting LNC AMX DVX!'", false);
 
 (***********************************************************)
 (*                MODULE DEFINITIONS GO BELOW              *)
-(***********************************************************)
-DEFINE_MODULE 
+(***********************************************************) 
 
-'DvxSwitcherDashboard_dr1_0_0' DvxSwitcherDashboard_dr1_0_0(vdvSwitcher, dvDVXSW);
+//html 5 web panel
+DEFINE_MODULE 'DvxSwitcherDashboard_dr1_0_0' DvxSwitcherDashboard_dr1_0_0(vdvSwitcher, dvDVXSW);
+
+// Define your communications module here like so:
+DEFINE_MODULE 'Optoma_TH1060_Comm_dr1_0_0' comm(vdvOptomaTH1060, dvOptomaTH1060);
 
 (***********************************************************)
 (*                THE EVENTS GO BELOW                      *)
@@ -333,11 +342,11 @@ DEFINE_MODULE
 DEFINE_EVENT
 
 // Set IO To detect a pull to low as active (low as in io pin to GND)
-DATA_EVENT[dvIO]
-{
-    send_command dvIO, 'SET INPUT 1 LOW' // DVX IO 1 - Projector Screen Wall Switch Pos 1 (UP)
-    send_command dvIO, 'SET INPUT 2 LOW' // DVX IO 2 - Projector Screen Wall Switch Pos 2 (DOWN)
-}
+//DATA_EVENT[dvIO]
+//{
+    //send_command dvIO, 'SET INPUT 1 LOW' // DVX IO 1 - Projector Screen Wall Switch Pos 1 (UP)
+    //send_command dvIO, 'SET INPUT 2 LOW' // DVX IO 2 - Projector Screen Wall Switch Pos 2 (DOWN)
+//}
 
 // Detect Pulls (Changes) on the io pin 1 (Projector Screen Wall Switch [UP])
 CHANNEL_EVENT[dvIO, 1]
@@ -409,6 +418,9 @@ DATA_EVENT[dvTPMaster]
  {
     PUSH:
     {
+	//Log what button was pressed on what panel
+	print("'Button pushed on dvTP: ', devToString(Button.Input.Device), ' BUTTON.INPUT.CHANNEL: ', ITOA(BUTTON.INPUT.CHANNEL)", false)
+	
 	// if the pressed button is in the WelcomePageMaster group (table) then run the code
 	if (fnGetIndex(WelcomePageMaster, BUTTON.INPUT.CHANNEL) != 0){
 	    print("'Button Pressed On The Welcome Page'", false);

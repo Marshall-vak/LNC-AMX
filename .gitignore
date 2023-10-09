@@ -29,3 +29,193 @@ DVX Main Program.tko
 2021-05-05-Optoma-Video Projector-TH1060/DuetModules/Optoma_TH1060_v1_0_2_dr1_0_0/Optoma TH1060 DisplayComponent.tko
 2021-05-05-Optoma-Video Projector-TH1060/DuetModules/Optoma_TH1060_v1_0_2_dr1_0_0/Optoma TH1060 DisplayComponent.tkn
 2021-05-05-Optoma-Video Projector-TH1060/DuetModules/Optoma_TH1060_v1_0_2_dr1_0_0/Optoma TH1060 DisplayComponent.src
+firmware/dvx/SW1905-15_DVX-HD_v1_6_76/descriptor.xml
+firmware/dvx/SW1905-15_DVX-HD_v1_6_76/Readme.txt
+firmware/dvx/SW1905-15_DVX-HD_v1_6_76/SW1905-15_DVX-HD_v1_6_76.kit
+firmware/dvx/SW1905-15_Master_CF_v4_8_331/descriptor.xml
+firmware/dvx/SW1905-15_Master_CF_v4_8_331/Readme.txt
+firmware/dvx/SW1905-15_Master_CF_v4_8_331/SW1905-15_Master_CF_v4_8_331.kit
+firmware/dvx/SW2105_NI_X101_Device_v1_31_6/Readme.txt
+firmware/dvx/SW2105_NI_X101_Device_v1_31_6/SW1905_15_DVX_HD_Programming_Instructions.txt
+firmware/dvx/SW2105_NI_X101_Device_v1_31_6/SW2105_NI_X101_Device_v1_31_6.kit
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/app.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/amxitg.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/bootstrap-grid.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/bootstrap-grid.rtl.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/bootstrap-reboot.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/bootstrap-reboot.rtl.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/bootstrap-utilities.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/bootstrap-utilities.rtl.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/bootstrap.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/bootstrap.rtl.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/icons.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/minMaxSlider.js.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/nouislider.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/nouislider.min.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/vendor/britecharts.min.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/vendor/buttons.bootstrap4.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/vendor/dataTables.bootstrap4.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/vendor/frappe-gantt.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/vendor/fullcalendar.min.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/vendor/jquery-jvectormap-1.2.2.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/vendor/responsive.bootstrap4.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/vendor/select.bootstrap4.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/vendor/simplemde.min.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/css/vendor/summernote-bs4.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/dripicons-v2.eot
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/dripicons-v2.svg
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/dripicons-v2.ttf
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/dripicons-v2.woff
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/materialdesignicons-webfont.eot
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/materialdesignicons-webfont.ttf
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/materialdesignicons-webfont.woff
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/materialdesignicons-webfont.woff2
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-Bold.eot
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-Bold.svg
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-Bold.ttf
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-Bold.woff
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-Light.svg
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-Light.ttf
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-Light.woff
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-Light.woff2
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-Regular.eot
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-Regular.svg
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-Regular.ttf
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-Regular.woff
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-SemiBold.eot
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-SemiBold.svg
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-SemiBold.ttf
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/Nunito-SemiBold.woff
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/summernote.eot
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/summernote.ttf
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/summernote.woff
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/summernote.woff2
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/unicons.eot
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/unicons.svg
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/unicons.ttf
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/unicons.woff
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/fonts/unicons.woff2
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/images/amx/amx-logo.png
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/angular-chart.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/app.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/app.min.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/app.min.js.map
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/appModel.json
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/Chart.min.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/FileSaver.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/graphs.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/minMaxSlider.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/nouislider.min.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/switcherController.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/uiRouter.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/vendor.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/vendor.min.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/assets/js/vendor.min.js.map
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/index-async.html
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/index.html
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-loader/angular-loader.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-loader/angular-loader.min.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-loader/angular-loader.min.js.map
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-loader/bower.json
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-loader/LICENSE.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-loader/package.json
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-loader/README.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-mocks/angular-mocks.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-mocks/bower.json
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-mocks/LICENSE.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-mocks/ngAnimateMock.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-mocks/ngMock.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-mocks/ngMockE2E.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-mocks/package.json
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-mocks/README.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-route/angular-route.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-route/angular-route.min.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-route/angular-route.min.js.map
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-route/bower.json
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-route/index.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-route/LICENSE.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-route/package.json
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular-route/README.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular/angular-csp.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular/angular.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular/angular.min.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular/angular.min.js.gzip
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular/angular.min.js.map
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular/bower.json
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular/index.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular/LICENSE.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular/package.json
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/angular/README.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/404.html
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/apple-touch-icon.png
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/browserconfig.xml
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/css/main.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/css/normalize.css
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/doc/css.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/doc/extend.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/doc/faq.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/doc/html.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/doc/js.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/doc/misc.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/doc/TOC.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/doc/usage.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/favicon.ico
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/humans.txt
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/js/main.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/js/plugins.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/js/vendor/jquery-3.1.0.min.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/LICENSE.txt
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/robots.txt
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/tile-wide.png
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/lib/html5-boilerplate/dist/tile.png
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/CHANGELOG.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/Client.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/Client.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/FileInfo.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/FileInfo.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/FtpContext.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/FtpContext.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/index.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/index.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/netUtils.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/netUtils.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/parseControlResponse.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/parseControlResponse.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/parseList.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/parseList.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/parseListDOS.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/parseListDOS.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/parseListMLSD.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/parseListMLSD.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/parseListUnix.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/parseListUnix.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/ProgressTracker.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/ProgressTracker.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/StringEncoding.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/StringEncoding.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/StringWriter.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/StringWriter.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/transfer.d.ts
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/dist/transfer.js
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/LICENSE.txt
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/NOTICE.txt
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/package.json
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/node_modules/basic-ftp/README.md
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/package-lock.json
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/views/audio.html
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/views/scratch.html
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/views/system.html
+root of ftp on amx dvx/modded/DVX-Switcher-Setup/views/video.html
+firmware/nxt-ca7/SW2258-09_NXD-700i_NXT-CA7_v2.92.5/ReadMe.txt
+firmware/nxt-ca7/SW2258-09_NXD-700i_NXT-CA7_v2.92.5/SW2258-09_NXTCA7_NXD700i_v2_92_5.kit
+test/DVX Main Program.axs
+test/modules/AudAmpPower.axs
+test/modules/AudAmpPower.src
+test/modules/AudAmpPower.tkn
+test/modules/AudAmpPower.tko
+test/modules/DvxSwitcherDashboard_dr1_0_0.jar
+test/modules/Optoma_TH1060_Comm_dr1_0_0.jar
+test/modules/ProjectorInterface.axs
+test/modules/TpNXTCA7.axs
+test/modules/TpNXTCA7.tko

@@ -121,11 +121,11 @@
 <SalesOrder></SalesOrder>
 <PurchaseOrder></PurchaseOrder>
 <Comments></Comments>
-<System IsActive="true" Platform="Netlinx" Transport="Serial" TransportEx="Serial"><Identifier>DVX</Identifier>
+<System IsActive="true" Platform="Netlinx" Transport="Serial" TransportEx="TCPIP"><Identifier>DVX</Identifier>
 <SysID>0</SysID>
 <TransTCPIP>0.0.0.0</TransTCPIP>
 <TransSerial>COM1,115200,8,None,1,None</TransSerial>
-<TransTCPIPEx>|1319|1|||</TransTCPIPEx>
+<TransTCPIPEx>192.168.50.101|1319|1|LNC DVX||</TransTCPIPEx>
 <TransSerialEx>COM1|38400|8|None|1|None||</TransSerialEx>
 <TransUSBEx>|||||</TransUSBEx>
 <TransVNMEx>10.0.0.1|1|&lt;Default&gt;</TransVNMEx>
@@ -136,10 +136,6 @@
 <UserName></UserName>
 <Password></Password>
 <Comments></Comments>
-<File CompileType="Netlinx" Type="Include"><Identifier>debug</Identifier>
-<FilePathName>..\House-Amx\includes\debug.axi</FilePathName>
-<Comments></Comments>
-</File>
 <File CompileType="Netlinx" Type="Other"><Identifier>connections</Identifier>
 <FilePathName>connections.txt</FilePathName>
 <Comments></Comments>
@@ -153,6 +149,11 @@
 <File CompileType="Netlinx" Type="MasterSrc"><Identifier>DVX Main Program</Identifier>
 <FilePathName>DVX Main Program.axs</FilePathName>
 <Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Other"><Identifier>includes</Identifier>
+<FilePathName>includes.png</FilePathName>
+<Comments></Comments>
+<MasterDirectory>\</MasterDirectory>
 </File>
 <File CompileType="Netlinx" Type="Include"><Identifier>amx-device-control</Identifier>
 <FilePathName>includes\amx-device-control.axi</FilePathName>
@@ -198,8 +199,20 @@
 <FilePathName>includes\common.axi</FilePathName>
 <Comments></Comments>
 </File>
+<File CompileType="Netlinx" Type="Include"><Identifier>debug</Identifier>
+<FilePathName>includes\debug.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>functions</Identifier>
+<FilePathName>includes\functions.axi</FilePathName>
+<Comments></Comments>
+</File>
 <File CompileType="Netlinx" Type="DUET"><Identifier>DvxSwitcherDashboard_dr1_0_0</Identifier>
 <FilePathName>modules\DvxSwitcherDashboard_dr1_0_0.jar</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="DUET"><Identifier>Optoma_TH1060_Comm_dr1_0_0</Identifier>
+<FilePathName>modules\Optoma_TH1060_Comm_dr1_0_0.jar</FilePathName>
 <Comments></Comments>
 </File>
 <File CompileType="Netlinx" Type="TP4"><Identifier>LNC-AMX</Identifier>
@@ -212,11 +225,11 @@
 <MasterDirectory>\</MasterDirectory>
 </File>
 </System>
-<System IsActive="false" Platform="Netlinx" Transport="Serial" TransportEx="Serial"><Identifier>DGX</Identifier>
-<SysID>0</SysID>
+<System IsActive="false" Platform="Netlinx" Transport="Serial" TransportEx="TCPIP"><Identifier>LNC-DGX</Identifier>
+<SysID>2</SysID>
 <TransTCPIP>0.0.0.0</TransTCPIP>
 <TransSerial>COM1,115200,8,None,1,None</TransSerial>
-<TransTCPIPEx>|1319|1|||</TransTCPIPEx>
+<TransTCPIPEx>192.168.50.132|1319|1|LNC DGX||</TransTCPIPEx>
 <TransSerialEx>COM1|38400|8|None|1|None||</TransSerialEx>
 <TransUSBEx>|||||</TransUSBEx>
 <TransVNMEx>10.0.0.1|1|&lt;Default&gt;</TransVNMEx>
@@ -227,10 +240,6 @@
 <UserName></UserName>
 <Password></Password>
 <Comments></Comments>
-<File CompileType="Netlinx" Type="Include"><Identifier>debug</Identifier>
-<FilePathName>..\House-Amx\includes\debug.axi</FilePathName>
-<Comments></Comments>
-</File>
 <File CompileType="Netlinx" Type="MasterSrc"><Identifier>DGX Main Program</Identifier>
 <FilePathName>DGX Main Program.axs</FilePathName>
 <Comments></Comments>
@@ -265,6 +274,10 @@
 </File>
 <File CompileType="Netlinx" Type="Include"><Identifier>common</Identifier>
 <FilePathName>includes\common.axi</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Include"><Identifier>debug</Identifier>
+<FilePathName>includes\debug.axi</FilePathName>
 <Comments></Comments>
 </File>
 </System>
