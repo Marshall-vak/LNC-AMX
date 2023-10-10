@@ -1,0 +1,82 @@
+define_function dvxRequestFanSpeed (dev dvxPort1)
+{
+	sendCommand (dvxPort1, "DVX_COMMAND_FAN_SPEED_REQUEST")
+}
+
+/*
+ * Function:    dvxRequestTemperature
+ *
+ * Arguments:   dev dvxPort1 - port 1 on the DVX siwtcher device
+ *
+ * Description: Requests DVX internal temperature.
+ */
+ 
+define_function dvxRequestTemperature (dev dvxPort1)
+{
+	sendCommand (dvxPort1, "DVX_COMMAND_TEMPERATURE_REQUEST")
+}
+
+/*
+ * Function:    dvxRequestAudioOutputMixLevel
+ *
+ * Arguments:   dev dvxAudioOutputPort - audio output port on the DVX
+ *              integer input - input port
+ *                      Values:
+ *                          DVX_MIX_INPUT_LINE
+ *                          DVX_MIX_INPUT_MIC1
+ *                          DVX_MIX_INPUT_MIC2
+ *              integer input - input port
+ *                      Values:
+ *                          DVX_MIX_OUTPUT_1_AMP
+ *                          DVX_MIX_OUTPUT_2_LINE
+ *                          DVX_MIX_OUTPUT_3_LINE
+ *                          DVX_MIX_OUTPUT_4_LINE
+ *
+ * Description: Requests the mix level contribution of the specified audio
+ *              input to the audio output port's mixer.
+ */
+define_function dvxRequestAudioOutputMixLevel (dev dvxAudioOutputPort, integer input, integer output)
+{
+	switch (input)
+	{
+		case DVX_MIX_INPUT_LINE:
+		case DVX_MIX_INPUT_MIC1:
+		case DVX_MIX_INPUT_MIC2:
+		{
+			sendCommand (dvxAudioOutputPort, "DVX_COMMAND_AUDIO_MIX_LEVEL_REQUEST,itoa(input),',',itoa(output)")
+		}
+	}
+}
+
+/*
+ * Function:    dvxSetAudioOutputMixLevel
+ *
+ * Arguments:   dev dvxAudioOutputPort - audio output port on the DVX
+ *              sinteger snMixLevel - mix level (-100 to 0)
+ *              integer input - input port
+ *                      Values:
+ *                          DVX_MIX_INPUT_LINE
+ *                          DVX_MIX_INPUT_MIC1
+ *                          DVX_MIX_INPUT_MIC2
+ *              integer input - input port
+ *                      Values:
+ *                          DVX_MIX_OUTPUT_1_AMP
+ *                          DVX_MIX_OUTPUT_2_LINE
+ *                          DVX_MIX_OUTPUT_3_LINE
+ *                          DVX_MIX_OUTPUT_4_LINE
+ *
+ * Description: Sets the mix level contribution of the specified audio
+ *              input to the audio output port's mixer.
+ */
+define_function dvxSetAudioOutputMixLevel (dev dvxAudioOutputPort, sinteger mixLevel, integer input, integer output)
+{
+	switch (input)
+	{
+		case DVX_MIX_INPUT_LINE:
+		case DVX_MIX_INPUT_MIC1:
+		case DVX_MIX_INPUT_MIC2:
+		{
+			sendCommand (dvxAudioOutputPort, "DVX_COMMAND_AUDIO_MIX_LEVEL,itoa(mixLevel),',',itoa(input),',',itoa(output)")
+		}
+	}
+}

@@ -1,0 +1,97 @@
+//Output Select Buttons
+INTEGER OutputButtons[] = { 11, 12, 13, 14, 15, 16 }
+//Physical Output Numbers (IN ORDER)
+INTEGER PhysicalOutputNumbers[] = { 11, 12, 5, 6, 7, 8 }
+
+//Input Select Buttons
+INTEGER InputButtons[] = { 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 }
+//Physical input Numbers (IN ORDER)
+INTEGER PhysicalInputNumbers[] = { 5, 6, 7, 8, 9, 10, 11, 12, 1, 16 }
+
+//Audio Power Status Channel Codes
+//Inside Audio Status Channel Code
+INTEGER InsideAudioStatus[] = { 1 }
+//Outside Audio Status Channel Code
+INTEGER OutsideAudioStatus[] = { 2 }
+
+
+DEFINE_VARIABLE
+
+//Mic Output Buttons
+INTEGER MicOutputButtons[] = { 6, 7, 8, 9 }
+//When a mic output button is pressed we can check if its in the inside table and if its not then its outside
+//Think of a grid
+INTEGER MicInsideButtons[] = { 6, 8 }
+//The other sider of the grid
+INTEGER MicOnebuttons[] = { 6, 7 }
+
+/*
+ * --------------------
+ * Button feedback functions
+ * --------------------
+ */
+
+/*
+ * Function:    moderoSetButtonFeedback
+ *
+ * Arguments:   dev panel - touch panel
+ *              integer btnChanCde - button channel code
+ *              integer status - feedback status
+ *                      Values:
+ *                          TRUE turns button feedback on
+ *                          FALSE turns button feedback off
+ *
+ * Description: Sets button feedback on or off based on value of status param.
+ */
+define_function moderoSetButtonFeedback (dev panel, integer btnChanCde, integer status)
+{
+	channelSet (panel, btnChanCde, status)
+}
+
+/*
+ * Function:    moderoEnableButtonFeedback
+ *
+ * Arguments:   dev panel - touch panel
+ *              integer btnChanCde - button channel code
+ *
+ * Description: Turns on button feedback.
+ */
+define_function moderoEnableButtonFeedback (dev panel, integer btnChanCde)
+{
+	channelOn (panel, btnChanCde)
+}
+
+/*
+ * Function:    moderoDisableButtonFeedback
+ *
+ * Arguments:   dev panel - touch panel
+ *              integer btnChanCde - button channel code
+ *
+ * Description: Turns off button feedback.
+ */
+define_function moderoDisableButtonFeedback (dev panel, integer btnChanCde)
+{
+	channelOff (panel, btnChanCde)
+}
+
+/*
+ * Function:    moderoToggleButtonFeedback
+ *
+ * Arguments:   dev panel - touch panel
+ *              integer btnChanCde - button channel code
+ *
+ * Description: Toggles button feedback (e.g, if on, turns button feedback off)
+ */
+define_function moderoToggleButtonFeedback (dev panel, integer btnChanCde)
+{
+	channelToggle (panel, btnChanCde)
+}
+
+/*
+ * Function:    moderoEnableButtonFeedbackPulse
+ *
+ * Arguments:   dev panel - touch panel
+ *              integer btnChanCde - button channel code
+ *
+ * Description: Pulse button feedback on for short time (default is .5 seconds)
+ */

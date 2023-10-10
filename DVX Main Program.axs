@@ -46,10 +46,10 @@ dvDvxDxLinkOut1 = 5002:3:0	//DxLink Output 1
 dvDvxDxLinkOut2 = 5002:4:0	//DxLink Output 2
 
 //Touch Panels
-dvTpServerRoom = 10:1:0		//Server Room / av room touch panel
-dvTpPodiumArea = 11:1:0		//Podium / Projector screen touch panel
-dvTpDvdPlayerArea = 12:1:0	//Dvd player area touch panel
-dvTpOldManTable = 13:1:0	//Old Man table touch panel
+dvTp1 = 10:1:0		//Server Room / av room touch panel
+dvTp2 = 11:1:0		//Podium / Projector screen touch panel
+dvTp3 = 12:1:0	//Dvd player area touch panel
+dvTp4 = 13:1:0	//Old Man table touch panel
 
 //projector
 vdvOptomaTH1060 = 41001:1:0  // The COMM module should use this as its duet device
@@ -73,9 +73,13 @@ INTEGER WelcomePageMaster[] = { 1 } //WelcomePageStartButton }
 
 //Output Select Buttons
 INTEGER OutputButtons[] = { 11, 12, 13, 14, 15, 16 }
+//Physical Output Numbers (IN ORDER)
+INTEGER PhysicalOutputNumbers[] = { 11, 12, 5, 6, 7, 8 }
 
 //Input Select Buttons
 INTEGER InputButtons[] = { 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 }
+//Physical input Numbers (IN ORDER)
+INTEGER PhysicalInputNumbers[] = { 5, 6, 7, 8, 9, 10, 11, 12, 1, 16 }
 
 //Mic Output Buttons
 INTEGER MicOutputButtons[] = { 6, 7, 8, 9 }
@@ -120,7 +124,13 @@ INTEGER AudioPowerOnButtons[] = { 110, 112 }
 INTEGER AudioInsideButtons[] = { 110, 111 }
 
 //All Buttons on the audio popup page ( All of the above )
-INTEGER AudioPopupMaster[] = { 105, 106, 107, 108 }
+INTEGER AudioPopupMaster[] = { 110, 111, 112, 113 }
+
+//Audio Power Status Channel Codes
+//Inside Audio Status Channel Code
+INTEGER InsideAudioStatus[] = { 200 }
+//Outside Audio Status Channel Code
+INTEGER OutsideAudioStatus[] = { 201 }
 
 
 //Audio Popup Power Buttons
@@ -138,7 +148,7 @@ INTEGER ShutdownPopupMaster[] = { 100 }
 
 
 //Group of all touch panels connected to the master
-DEV dvTPMaster[] = { dvTpServerRoom, dvTpPodiumArea, dvTpDvdPlayerArea, dvTpOldManTable }
+DEV dvTPMaster[] = { dvTp1, dvTp2, dvTp3, dvTp4 }
 
 //Group of all HDMI outputs on the DVX
 DEV dvHdmiMaster[] = { dvHdmi1, dvHdmi2, dvHdmi3, dvHdmi4 }
@@ -184,7 +194,8 @@ INTEGER ProjectorScreenState = 0
 
 DEFINE_FUNCTION INTEGER fnGetIndex(INTEGER nArray[], INTEGER nValue){
 
-   INTEGER x
+    //for use in for loops
+    INTEGER x
    
     FOR (x=1; x<=LENGTH_ARRAY(nArray); x++) {
 	IF (nArray[x] = nValue) RETURN x
@@ -194,8 +205,40 @@ DEFINE_FUNCTION INTEGER fnGetIndex(INTEGER nArray[], INTEGER nValue){
 
 }
 
+DEFINE_FUNCTION INTEGER channelGet(dev device, integer chan){
+
+    return [device, chan]
+    
+}
+
+DEFINE_FUNCTION fnResetInputFeedback(dev TP){
+
+    //for use in for loops
+    INTEGER x
+    
+    for (x=1; x<=LENGTH_ARRAY(OutputButtons); x++) {
+	moderoDisableButtonFeedback(TP, OutputButtons[x])
+    }
+    
+}
+
+DEFINE_FUNCTION fnResetOutputFeedback(dev TP){
+    
+    //for use in for loops
+    INTEGER x
+    
+    for (x=1; x<=LENGTH_ARRAY(InputButtons); x++) {
+	moderoDisableButtonFeedback(TP, InputButtons[x])
+    }
+}
+
+//INTEGER AudioPopupMaster[] = { 110, 111, 112, 113 }
+
 // Function for turning on or off the Inside audio
 DEFINE_FUNCTION fnSetInsideAudioPower(INTEGER State){
+
+    //for use in for loops
+    INTEGER x
     
     // set the global state to the current state
     InsideAudioState = State
@@ -208,11 +251,17 @@ DEFINE_FUNCTION fnSetInsideAudioPower(INTEGER State){
 	OFF[dvRELAY, 1]
     }
     
+    //update panel fedback
+    fnUpdateAudioPowerStatus()
+    
 }
 
 // Repeat for outside
 // Function for turning on or off the Outside audio
 DEFINE_FUNCTION fnSetOutsideAudioPower(INTEGER State){
+
+    //for use in for loops
+    INTEGER x
     
     // set the global state to the current state
     OutsideAudioState = State
@@ -221,41 +270,171 @@ DEFINE_FUNCTION fnSetOutsideAudioPower(INTEGER State){
     IF (State = 1) {
 	ON[dvRELAY, 2]
     } else {
-	// turn off relay 2
+	// turn off relay 1
 	OFF[dvRELAY, 2]
     }
     
+    //update panel fedback
+    fnUpdateAudioPowerStatus()
+    
 }
+
+DEFINE_FUNCTION fnUpdateMicButtonStatus(){
+
+    //for use in for loops
+    INTEGER x
+    
+    //turn the status light off on every touch pannel
+    for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
+	if (MicOneState == 1){
+	    //inside button feedback
+	    moderoDisableButtonFeedback(dvTPMaster[x], MicOutputButtons[1])
+		
+	    //outside button feedback
+	    moderoEnableButtonFeedback(dvTPMaster[x], MicOutputButtons[2])
+	} else {
+	    //outside button feedback
+	    moderoDisableButtonFeedback(dvTPMaster[x], MicOutputButtons[2])
+		
+	    //inside button feedback
+	    moderoEnableButtonFeedback(dvTPMaster[x], MicOutputButtons[1])
+	}
+	
+	if (MicTwoState == 1){
+	    //inside button feedback
+	    moderoDisableButtonFeedback(dvTPMaster[x], MicOutputButtons[3])
+		
+	    //outside button feedback
+	    moderoEnableButtonFeedback(dvTPMaster[x], MicOutputButtons[4])
+	    } else {
+	    //outside button feedback
+	    moderoDisableButtonFeedback(dvTPMaster[x], MicOutputButtons[4])
+		
+	    //inside button feedback
+	    moderoEnableButtonFeedback(dvTPMaster[x], MicOutputButtons[3])
+	}
+    }
+}
+
+DEFINE_FUNCTION fnUpdateAudioPowerStatus(){
+
+    //for use in for loops
+    INTEGER x
+    
+    //turn the status light off on every touch pannel
+    for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
+	//set the panel states to current controller states
+	if (InsideAudioState == 1){
+	    //status light
+	    moderoEnableButtonFeedback(Data.Device, InsideAudioStatus[1])
+	    
+	    //popup off button
+	    moderoDisableButtonFeedback(Data.Device, AudioPopupMaster[2])
+	    
+	    //popup on button
+	    moderoEnableButtonFeedback(Data.Device, AudioPopupMaster[1])
+	} else {
+	    //status light
+	    moderoDisableButtonFeedback(Data.Device, InsideAudioStatus[1])
+	    
+	    //popup off button
+	    moderoDisableButtonFeedback(Data.Device, AudioPopupMaster[1])
+	    
+	    //popup on button
+	    moderoEnableButtonFeedback(Data.Device, AudioPopupMaster[2])
+	}
+	
+	if (OutsideAudioState == 1){
+	    //status light
+	    moderoEnableButtonFeedback(Data.Device, OutsideAudioStatus[1])
+	    
+	    //popup off button
+	    moderoDisableButtonFeedback(Data.Device, AudioPopupMaster[4])
+	    
+	    //popup on button
+	    moderoEnableButtonFeedback(Data.Device, AudioPopupMaster[3])
+	} else {
+	    //status light
+	    moderoDisableButtonFeedback(Data.Device, OutsideAudioStatus[1])
+	    
+	    //popup off button
+	    moderoDisableButtonFeedback(Data.Device, AudioPopupMaster[3])
+	    
+	    //popup on button
+	    moderoEnableButtonFeedback(Data.Device, AudioPopupMaster[4])
+	}
+    }
+}
+
+/*
+ * Function:    dvxSetAudioOutputMixLevel
+ *
+ * Arguments:   dev dvxAudioOutputPort - audio output port on the DVX
+ *              sinteger snMixLevel - mix level (-100 to 0)
+ *              integer input - input port
+ *                      Values:
+ *                          DVX_MIX_INPUT_LINE
+ *                          DVX_MIX_INPUT_MIC1
+ *                          DVX_MIX_INPUT_MIC2
+ *              integer input - input port
+ *                      Values:
+ *                          DVX_MIX_OUTPUT_1_AMP
+ *                          DVX_MIX_OUTPUT_2_LINE
+ *                          DVX_MIX_OUTPUT_3_LINE
+ *                          DVX_MIX_OUTPUT_4_LINE
+ *
+ * Description: Sets the mix level contribution of the specified audio
+ *              input to the audio output port's mixer.
+ */
+//define_function dvxSetAudioOutputMixLevel (dev dvxAudioOutputPort, sinteger mixLevel, integer input, integer output)
 
 // State 0 is inside and State 1 is outside
 DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State){
-    
     if (MicNumber == 1){
 	MicOneState = State
 	
 	if (State == 1){
 	    //Switch Mic one to outside audio device here
 	    
-	    print("'==================[ implement me ]=================='", false);
+	    dvxSetAudioOutputMixLevel(dvSWA, 0, 2, 2)
+	    dvxSetAudioOutputMixLevel(dvSWA, 0, 2, 3)
+	    dvxSetAudioOutputMixLevel(dvSWA, 100, 2, 4)
+	    
+	    print("'a'", false);
 	} else {
 	    //Switch Mic one to inside audio device here
 	    
-	    print("'==================[ implement me ]=================='", false);
+	    dvxSetAudioOutputMixLevel(dvSWA, 100, 2, 2)
+	    dvxSetAudioOutputMixLevel(dvSWA, 0, 2, 3)
+	    dvxSetAudioOutputMixLevel(dvSWA, 0, 2, 4)
+	    
+	    print("'b'", false);
+	}
+	
+    } else {
+	MicTwoState = State
+	
+	if (State == 1){
+	    //Switch Mic two to outside audio device here
+	    
+	    dvxSetAudioOutputMixLevel(dvSWA, 0, 3, 2)
+	    dvxSetAudioOutputMixLevel(dvSWA, 0, 3, 3)
+	    dvxSetAudioOutputMixLevel(dvSWA, 100, 3, 4)
+	    
+	    print("'c'", false);
+	} else {
+	    //Switch Mic two to inside audio device here
+	    
+	    dvxSetAudioOutputMixLevel(dvSWA, 0, 3, 2)
+	    dvxSetAudioOutputMixLevel(dvSWA, 100, 3, 3)
+	    dvxSetAudioOutputMixLevel(dvSWA, 0, 3, 4)
+	    
+	    print("'d'", false);
 	}
     }
     
-    
-    MicTwoState = State
-	
-    if (State == 1){
-	//Switch Mic two to outside audio device here
-	
-	print("'==================[ implement me ]=================='", false);
-    } else {
-	//Switch Mic two to inside audio device here
-	
-	print("'==================[ implement me ]=================='", false);
-    }
+    //update the panel button status
+    fnUpdateMicButtonStatus()
 }
 
 // DVX Relay 3 - Projector Screen Contacts (UP)
@@ -288,6 +467,9 @@ DEFINE_FUNCTION fnSetProjectorScreenState(INTEGER State)
 // System Reset Function
 DEFINE_FUNCTION fnResetSystem()
 {
+    //for use in for loops
+    INTEGER x
+
     print("'Resetting All Systems'", false);
     
     // 1 is on 0 is off
@@ -299,7 +481,27 @@ DEFINE_FUNCTION fnResetSystem()
     fnSetMicState(1, 0)
     fnSetMicState(2, 1)
     
+    //update the panel status
+    fnUpdateMicButtonStatus()
     
+    //update audio power status
+    fnUpdateAudioPowerStatus()
+
+    //for every touch panel in the table
+    for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
+	//reset input and output button feedback
+	fnResetInputFeedback(dvTPMaster[x])
+	fnResetOutputFeedback(dvTPMaster[x])
+	
+	//disable all popups
+	moderoDisableAllPopups(dvTPMaster[x])
+	
+	//set the page to the welcome page
+	moderoSetPage(dvTPMaster[x], 'Welcome')
+	
+	//beep the touch panel
+	moderoBeepDouble(dvTPMaster[x])
+    }
 }
 
 (***********************************************************)
@@ -340,6 +542,20 @@ DEFINE_MODULE 'Optoma_TH1060_Comm_dr1_0_0' comm(vdvOptomaTH1060, dvOptomaTH1060)
 (*                THE EVENTS GO BELOW                      *)
 (***********************************************************)
 DEFINE_EVENT
+
+DATA_EVENT[dvCOM1]
+{
+    online: {
+	SEND_COMMAND dvCOM1,'SET BAUD 9600,N,8,1'
+	SEND_COMMAND dvCOM1, 'HSOFF'
+    }
+    
+    STRING: {
+	STACK_VAR CHAR msg[16]
+	
+	SEND_STRING dvCONSOLE, "'dvCOM1 returned:', msg"
+    }
+}
 
 // Set IO To detect a pull to low as active (low as in io pin to GND)
 //DATA_EVENT[dvIO]
@@ -404,6 +620,15 @@ DATA_EVENT[dvTPMaster]
 	//pannel admin password
 	moderoSetPageFlipPassword(Data.Device, '5', '1988')
 	
+	//reset input and output feedback for this panel
+	fnResetInputFeedback(Data.Device)
+	fnResetOutputFeedback(Data.Device)
+	
+	//update panel mic status
+	fnUpdateMicButtonStatus()
+	
+	//update audio power status
+	fnUpdateAudioPowerStatus()
 	
 	//enable touch panel
 	moderoSetPage(Data.Device, 'Welcome')
@@ -419,7 +644,7 @@ DATA_EVENT[dvTPMaster]
     PUSH:
     {
 	//Log what button was pressed on what panel
-	print("'Button pushed on dvTP: ', devToString(Button.Input.Device), ' BUTTON.INPUT.CHANNEL: ', ITOA(BUTTON.INPUT.CHANNEL)", false)
+	print("'Button pushed on dvTP: ', devToString(BUTTON.INPUT.DEVICE), ' BUTTON.INPUT.CHANNEL: ', ITOA(BUTTON.INPUT.CHANNEL)", false)
 	
 	// if the pressed button is in the WelcomePageMaster group (table) then run the code
 	if (fnGetIndex(WelcomePageMaster, BUTTON.INPUT.CHANNEL) != 0){
@@ -455,7 +680,7 @@ DATA_EVENT[dvTPMaster]
 			
 			fnSetMicState(1, 1)
 		    }
-
+		    
 		} else {
 		    print("'Adressing Mic Two'", false);
 		    
@@ -472,10 +697,30 @@ DATA_EVENT[dvTPMaster]
 		    }
 		}
 	    } else {
-	    
-		print("'Button Pressed Adressing Input Selection'", false);
-	    
-		print("'==================[ implement me ]=================='", false);
+		if (fnGetIndex(OutputButtons, BUTTON.INPUT.CHANNEL) != 0){
+		    print("'Button Pressed Adressing Output Selection: '", false);
+		    
+		    //turn on the button feedback for the button that was pressed
+		    moderoToggleButtonFeedback(BUTTON.INPUT.DEVICE, BUTTON.INPUT.CHANNEL)
+		    
+		    //channelGet
+		    
+		    print("'==================[ implement me ]=================='", false);
+		
+		    SEND_STRING dvCOM1, "'test...'"
+		} else {
+		    print("'Button Pressed Adressing Input Selection'", false);
+		    
+		    //turn on the button feedback for the button that was pressed
+		    moderoToggleButtonFeedback(BUTTON.INPUT.DEVICE, BUTTON.INPUT.CHANNEL)
+		    
+		    fnResetInputFeedback(BUTTON.INPUT.DEVICE)
+		    fnResetOutputFeedback(BUTTON.INPUT.DEVICE)
+		    
+		    print("'==================[ implement me ]=================='", false);
+		
+		    SEND_STRING dvCOM1, "'test...'"
+		}
 	    }
 	}
 	
@@ -589,10 +834,12 @@ DATA_EVENT[dvTPMaster]
 	    if (fnGetIndex(ShutDownYesButtons, BUTTON.INPUT.CHANNEL) != 0){
 		// Call System reset
 		
+		fnResetSystem()
 	    } else {
 		//else then it was a no
 		print("'Aborting System Reset!'", false);
 		
+		print("'==================[ implement me ]=================='", false);
 	    }
 	}
     }
@@ -629,7 +876,7 @@ data_event[vdvSwitcher]
 (* X-Series masters, changing variables in the DEFINE_PROGRAM    *)
 (* section of code can negatively impact program performance.    *)
 (*                                                               *)
-(* See “Differences in DEFINE_PROGRAM Program Execution” section *)
+(* See Differences in DEFINE_PROGRAM Program Execution section   *)
 (* of the NX-Series Controllers WebConsole & Programming Guide   *)
 (* for additional and alternate coding methodologies.            *)
 (*****************************************************************)
@@ -642,5 +889,3 @@ DEFINE_PROGRAM
 (*         !!!  DO NOT PUT ANY CODE BELOW THIS COMMENT  !!!      *)
 (*                                                               *)
 (*****************************************************************)
-
-

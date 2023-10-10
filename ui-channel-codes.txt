@@ -30,8 +30,8 @@ Audio Power Prompt
 
 --------------- Address Codes ---------------
 Main Page
-1 - Inside Audio Status
-2 - Outside Audio Status
+200 - Inside Audio Status
+201 - Outside Audio Status
 
 Projector Power Prompt
 101 - Lamp Hours
