@@ -48,8 +48,8 @@ dvDvxDxLinkOut2 = 5002:4:0	//DxLink Output 2
 //Touch Panels
 dvTp1 = 10:1:0		//Server Room / av room touch panel
 dvTp2 = 11:1:0		//Podium / Projector screen touch panel
-dvTp3 = 12:1:0	//Dvd player area touch panel
-dvTp4 = 13:1:0	//Old Man table touch panel
+dvTp3 = 12:1:0		//Dvd player area touch panel
+dvTp4 = 13:1:0		//Old Man table touch panel
 
 //projector
 vdvOptomaTH1060 = 41001:1:0  // The COMM module should use this as its duet device
@@ -211,7 +211,33 @@ DEFINE_FUNCTION INTEGER channelGet(dev device, integer chan){
     
 }
 
-DEFINE_FUNCTION fnResetInputFeedback(dev TP){
+DEFINE_FUNCTION INTEGER fnHasOutputFeedback(dev TP){
+
+    //for use in for loops
+    INTEGER x
+    
+    for (x=1; x<=LENGTH_ARRAY(OutputButtons); x++) {
+	if (channelGet(TP, OutputButtons[x]) == 1) return 1
+    }
+    
+    return 0
+    
+}
+
+DEFINE_FUNCTION INTEGER fnHasInputFeedback(dev TP){
+    
+    //for use in for loops
+    INTEGER x
+    
+    for (x=1; x<=LENGTH_ARRAY(InputButtons); x++) {
+	if (channelGet(TP, InputButtons[x] == 1)) return 1
+    }
+    
+    return 0
+    
+}
+
+DEFINE_FUNCTION fnResetOutputFeedback(dev TP){
 
     //for use in for loops
     INTEGER x
@@ -222,7 +248,7 @@ DEFINE_FUNCTION fnResetInputFeedback(dev TP){
     
 }
 
-DEFINE_FUNCTION fnResetOutputFeedback(dev TP){
+DEFINE_FUNCTION fnResetInputFeedback(dev TP){
     
     //for use in for loops
     INTEGER x
@@ -614,7 +640,7 @@ DATA_EVENT[dvTPMaster]
 	
 	//set panel passwords
 	moderoSetPageFlipPassword(Data.Device, '1', '1950')
-	moderoSetPageFlipPassword(Data.Device, '2', '1988')
+	moderoSetPageFlipPassword(Data.Device, '2', '1998')
 	moderoSetPageFlipPassword(Data.Device, '3', '1988')
 	moderoSetPageFlipPassword(Data.Device, '4', '1988')
 	//pannel admin password
@@ -703,10 +729,23 @@ DATA_EVENT[dvTPMaster]
 		    //turn on the button feedback for the button that was pressed
 		    moderoToggleButtonFeedback(BUTTON.INPUT.DEVICE, BUTTON.INPUT.CHANNEL)
 		    
-		    //channelGet
+		    //channelGet(dev TP, INTIGER Channel)
+		    //fnHasOutputFeedback(dev TP)
+		    //fnHasInputFeedback(dev TP)
+		    
+		    //if an output button is pressed and an input button is already pressed
+		    if (fnHasInputFeedback(BUTTON.INPUT.DEVICE)){
+			//add com logic
+			
+			fnResetOutputFeedback(BUTTON.INPUT.DEVICE)
+			fnResetInputFeedback(BUTTON.INPUT.DEVICE)
+		    }
 		    
 		    print("'==================[ implement me ]=================='", false);
-		
+		    
+		    //CL0I16O5 6 7T
+		    //CLI(INPUT)16O(Output)5 6 7T(Take)
+		    //CL0I + input number + O + output numbers + T
 		    SEND_STRING dvCOM1, "'test...'"
 		} else {
 		    print("'Button Pressed Adressing Input Selection'", false);
@@ -714,11 +753,29 @@ DATA_EVENT[dvTPMaster]
 		    //turn on the button feedback for the button that was pressed
 		    moderoToggleButtonFeedback(BUTTON.INPUT.DEVICE, BUTTON.INPUT.CHANNEL)
 		    
-		    fnResetInputFeedback(BUTTON.INPUT.DEVICE)
-		    fnResetOutputFeedback(BUTTON.INPUT.DEVICE)
+		    //only input button can be pressed at once
+		    if (fnHasInputFeedback(BUTTON.INPUT.DEVICE)){
+			//Disable all input buttons
+			fnResetInputFeedback(BUTTON.INPUT.DEVICE)
+			
+			//ReEnable the button that was just pressed
+			moderoEnableButtonFeedback(BUTTON.INPUT.DEVICE, BUTTON.INPUT.CHANNEL)
+		    }
+		    
+		    //if an input button is pressed and an output button is already pressed
+		    if (fnHasOutputFeedback(BUTTON.INPUT.DEVICE)){
+			//add com logic
+			
+			fnResetOutputFeedback(BUTTON.INPUT.DEVICE)
+			fnResetInputFeedback(BUTTON.INPUT.DEVICE)
+		    }
+		    
 		    
 		    print("'==================[ implement me ]=================='", false);
 		
+		    //CL0I16O5 6 7T
+		    //CLI(INPUT)16O(Output)5 6 7T(Take)
+		    //CL0I + input number + O + output numbers + T
 		    SEND_STRING dvCOM1, "'test...'"
 		}
 	    }
