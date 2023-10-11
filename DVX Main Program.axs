@@ -81,6 +81,9 @@ INTEGER InputButtons[] = { 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 }
 //Physical input Numbers (IN ORDER)
 INTEGER PhysicalInputNumbers[] = { 5, 6, 7, 8, 9, 10, 11, 12, 1, 16 }
 
+//Input / Output Master
+INTEGER InputOutputMaster[] = { 11, 12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 }
+
 //Mic Output Buttons
 INTEGER MicOutputButtons[] = { 6, 7, 8, 9 }
 //When a mic output button is pressed we can check if its in the inside table and if its not then its outside
@@ -188,11 +191,15 @@ INTEGER MicTwoState = 1 // Default to outside state
 //Global Projector Screen State Variable
 INTEGER ProjectorScreenState = 0
 
+//console command for use in dvCom1 commands to the dgx
+ComCommand[40] = ''
+
 (***********************************************************)
 (*              Function DEFINITIONS GO BELOW              *)
 (***********************************************************)
 
-DEFINE_FUNCTION INTEGER fnGetIndex(INTEGER nArray[], INTEGER nValue){
+DEFINE_FUNCTION INTEGER fnGetIndex(INTEGER nArray[], INTEGER nValue)
+{
 
     //for use in for loops
     INTEGER x
@@ -205,63 +212,71 @@ DEFINE_FUNCTION INTEGER fnGetIndex(INTEGER nArray[], INTEGER nValue){
 
 }
 
-DEFINE_FUNCTION INTEGER channelGet(dev device, integer chan){
+DEFINE_FUNCTION INTEGER channelGet(dev device, integer chan)
+{
 
     return [device, chan]
     
 }
 
-DEFINE_FUNCTION INTEGER fnHasOutputFeedback(dev TP){
+DEFINE_FUNCTION INTEGER fnHasOutputFeedback(dev dvTP)
+{
 
     //for use in for loops
     INTEGER x
     
     for (x=1; x<=LENGTH_ARRAY(OutputButtons); x++) {
-	if (channelGet(TP, OutputButtons[x]) == 1) return 1
+	if (channelGet(dvTP, OutputButtons[x]) == 1) return 1
     }
     
     return 0
     
 }
 
-DEFINE_FUNCTION INTEGER fnHasInputFeedback(dev TP){
+DEFINE_FUNCTION INTEGER fnHasInputFeedback(dev dvTP)
+{
     
     //for use in for loops
     INTEGER x
     
     for (x=1; x<=LENGTH_ARRAY(InputButtons); x++) {
-	if (channelGet(TP, InputButtons[x] == 1)) return 1
+	if (channelGet(dvTP, InputButtons[x]) == 1) return 1
     }
     
     return 0
     
 }
 
-DEFINE_FUNCTION fnResetOutputFeedback(dev TP){
+DEFINE_FUNCTION fnResetOutputFeedback(dev dvTP)
+{
 
     //for use in for loops
     INTEGER x
     
+    //for every input disable the feedback
     for (x=1; x<=LENGTH_ARRAY(OutputButtons); x++) {
-	moderoDisableButtonFeedback(TP, OutputButtons[x])
+	moderoDisableButtonFeedback(dvTP, OutputButtons[x])
     }
     
 }
 
-DEFINE_FUNCTION fnResetInputFeedback(dev TP){
+DEFINE_FUNCTION fnResetInputFeedback(dev dvTP)
+{
     
     //for use in for loops
     INTEGER x
     
+    //for every input disable the feedback
     for (x=1; x<=LENGTH_ARRAY(InputButtons); x++) {
-	moderoDisableButtonFeedback(TP, InputButtons[x])
+	moderoDisableButtonFeedback(dvTP, InputButtons[x])
     }
 }
 
 //INTEGER AudioPopupMaster[] = { 110, 111, 112, 113 }
 
 // Function for turning on or off the Inside audio
-DEFINE_FUNCTION fnSetInsideAudioPower(INTEGER State){
+DEFINE_FUNCTION fnSetInsideAudioPower(INTEGER State)
+{
 
     //for use in for loops
     INTEGER x
@@ -284,7 +299,8 @@ DEFINE_FUNCTION fnSetInsideAudioPower(INTEGER State){
 
 // Repeat for outside
 // Function for turning on or off the Outside audio
-DEFINE_FUNCTION fnSetOutsideAudioPower(INTEGER State){
+DEFINE_FUNCTION fnSetOutsideAudioPower(INTEGER State)
+{
 
     //for use in for loops
     INTEGER x
@@ -305,7 +321,8 @@ DEFINE_FUNCTION fnSetOutsideAudioPower(INTEGER State){
     
 }
 
-DEFINE_FUNCTION fnUpdateMicButtonStatus(){
+DEFINE_FUNCTION fnUpdateMicButtonStatus()
+{
 
     //for use in for loops
     INTEGER x
@@ -342,7 +359,8 @@ DEFINE_FUNCTION fnUpdateMicButtonStatus(){
     }
 }
 
-DEFINE_FUNCTION fnUpdateAudioPowerStatus(){
+DEFINE_FUNCTION fnUpdateAudioPowerStatus()
+{
 
     //for use in for loops
     INTEGER x
@@ -415,7 +433,8 @@ DEFINE_FUNCTION fnUpdateAudioPowerStatus(){
 //define_function dvxSetAudioOutputMixLevel (dev dvxAudioOutputPort, sinteger mixLevel, integer input, integer output)
 
 // State 0 is inside and State 1 is outside
-DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State){
+DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State)
+{
     if (MicNumber == 1){
 	MicOneState = State
 	
@@ -461,6 +480,52 @@ DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State){
     
     //update the panel button status
     fnUpdateMicButtonStatus()
+}
+
+//CL0I16O5 6 7T
+//CLI(INPUT)16O(Output)5 6 7T(Take)
+//CL0I + input number + O + output numbers + T
+DEFINE_FUNCTION INTEGER fnCalculateComCommand(dev dvTP)
+{
+    
+    //for use in for loops
+    INTEGER x
+    
+    //Start With Change Input
+    ComCommand = 'CL0I'
+    
+    //add the input
+    for (x=1; x<=LENGTH_ARRAY(InputButtons); x++) {
+	if (channelGet(dvTP, InputButtons[x])){
+	    ComCommand = "ComCommand, ITOA(PhysicalInputNumbers[x])"
+	}
+    }
+    
+    //Add O for outputs
+    ComCommand = "ComCommand, 'O'"
+    
+    //Add the outputs
+    for (x=1; x<=LENGTH_ARRAY(OutputButtons); x++) {
+	if (channelGet(dvTP, OutputButtons[x])){
+	    if (ComCommand[LENGTH_ARRAY(ComCommand)] == 'O'){
+		ComCommand = "ComCommand, ITOA(PhysicalOutputNumbers[x])"
+	    } else {
+		ComCommand = "ComCommand, ' ', ITOA(PhysicalOutputNumbers[x])"
+	    }
+	}
+    }
+    
+    //add T to the end of the command for Take
+    ComCommand = "ComCommand, 'T'"
+    
+    //debug log
+    print("'Calculated ComCommand: ', ComCommand", false);
+    
+    //if there is nothing passed there is an error stop the program
+    if (ComCommand == 'CL0IOT') return 0
+    
+    //no error... Continue!
+    return 1
 }
 
 // DVX Relay 3 - Projector Screen Contacts (UP)
@@ -554,6 +619,8 @@ DEFINE_START
 //yay
 print("'Starting LNC AMX DVX!'", false);
 
+fnResetSystem()
+
 (***********************************************************)
 (*                MODULE DEFINITIONS GO BELOW              *)
 (***********************************************************) 
@@ -640,6 +707,7 @@ DATA_EVENT[dvTPMaster]
 	
 	//set panel passwords
 	moderoSetPageFlipPassword(Data.Device, '1', '1950')
+	//Debug Menu PAssword
 	moderoSetPageFlipPassword(Data.Device, '2', '1998')
 	moderoSetPageFlipPassword(Data.Device, '3', '1988')
 	moderoSetPageFlipPassword(Data.Device, '4', '1988')
@@ -722,7 +790,9 @@ DATA_EVENT[dvTPMaster]
 			fnSetMicState(2, 1)
 		    }
 		}
-	    } else {
+	    }
+	    
+	    if (fnGetIndex(InputOutputMaster, BUTTON.INPUT.CHANNEL) != 0){
 		if (fnGetIndex(OutputButtons, BUTTON.INPUT.CHANNEL) != 0){
 		    print("'Button Pressed Adressing Output Selection: '", false);
 		    
@@ -735,18 +805,13 @@ DATA_EVENT[dvTPMaster]
 		    
 		    //if an output button is pressed and an input button is already pressed
 		    if (fnHasInputFeedback(BUTTON.INPUT.DEVICE)){
-			//add com logic
+			//calculate the com command and if its a sucess run the command
+			if(fnCalculateComCommand(BUTTON.INPUT.DEVICE)) SEND_STRING dvCOM1, ComCommand
 			
+			//reset the button feedback
 			fnResetOutputFeedback(BUTTON.INPUT.DEVICE)
 			fnResetInputFeedback(BUTTON.INPUT.DEVICE)
 		    }
-		    
-		    print("'==================[ implement me ]=================='", false);
-		    
-		    //CL0I16O5 6 7T
-		    //CLI(INPUT)16O(Output)5 6 7T(Take)
-		    //CL0I + input number + O + output numbers + T
-		    SEND_STRING dvCOM1, "'test...'"
 		} else {
 		    print("'Button Pressed Adressing Input Selection'", false);
 		    
@@ -764,19 +829,11 @@ DATA_EVENT[dvTPMaster]
 		    
 		    //if an input button is pressed and an output button is already pressed
 		    if (fnHasOutputFeedback(BUTTON.INPUT.DEVICE)){
-			//add com logic
+			if(fnCalculateComCommand(BUTTON.INPUT.DEVICE)) SEND_STRING dvCOM1, ComCommand
 			
 			fnResetOutputFeedback(BUTTON.INPUT.DEVICE)
 			fnResetInputFeedback(BUTTON.INPUT.DEVICE)
 		    }
-		    
-		    
-		    print("'==================[ implement me ]=================='", false);
-		
-		    //CL0I16O5 6 7T
-		    //CLI(INPUT)16O(Output)5 6 7T(Take)
-		    //CL0I + input number + O + output numbers + T
-		    SEND_STRING dvCOM1, "'test...'"
 		}
 	    }
 	}
@@ -810,6 +867,7 @@ DATA_EVENT[dvTPMaster]
 		
 		//for future implementation
 		print("'==================[ implement me ]=================='", false);
+		
 	    }
 	    
 	    //if the button is a hour refresh button continue
@@ -828,15 +886,15 @@ DATA_EVENT[dvTPMaster]
 		    //if the button is an up button
 		    print("'Sending The Projector Screen Up'", false);
 		    
-		    //for future implementation
-		    print("'==================[ implement me ]=================='", false);
+		    //send the projector screen up
+		    ON[dvRELAY, 3]
 		    
 		} else {
 		    //if the button not a up button then its a down button
 		    print("'Sending The Projector Screen Down'", false);
 		    
-		    //for future implementation
-		    print("'==================[ implement me ]=================='", false);
+		    //send the projector screen down
+		    ON[dvRELAY, 4]
 		}
 	    }
 	}
@@ -903,7 +961,28 @@ DATA_EVENT[dvTPMaster]
  
     RELEASE:
     {
-    
+	//Log what button was released on what panel
+	print("'Button released on dvTP: ', devToString(BUTTON.INPUT.DEVICE), ' BUTTON.INPUT.CHANNEL: ', ITOA(BUTTON.INPUT.CHANNEL)", false)
+	
+	//if the button is a Screen Button button continue
+	if (fnGetIndex(ProjectorScreenButtons, BUTTON.INPUT.CHANNEL) != 0){
+	    print("'Projector Screen Button Released'", false);
+	    
+	    if (fnGetIndex(ProjectorScreenUpButtons, BUTTON.INPUT.CHANNEL) != 0){
+		//if the button is an up button
+		print("'Stopping Sending The Projector Screen Up'", false);
+		    
+		//Stop Sending the projector screen up
+		OFF[dvRELAY, 3]
+		
+	    } else {
+		//if the button not a up button then its a down button
+		print("'Stopping Sending The Projector Screen Down'", false);
+		    
+		//Stop Sending the projector screen down
+		OFF[dvRELAY, 4]
+	    }
+	}
     }
  }
 
