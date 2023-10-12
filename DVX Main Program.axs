@@ -939,6 +939,16 @@ DATA_EVENT[dvTPMaster]
 	    }
 	}
 	
+	////////////////////IMPORTANT////////////////////
+	//antything to do with projector control has been canceled and these menus have been moved to the debug menu
+	//it would be a waste of a lot of work to delete the logic behind the menus so they have been left in place and not completed
+	//anything marked for future implamentation that regards a projecter is here by canceled 
+	//sad really but I cant count on them not replacing the projector outright every time the bulb goes bad 
+	//so there is no way to know what projector is being used
+	//without this knowledge there is no way to program for a projector that hasn't even been conceived yet
+	//I dont want buttons on the menu that do nothing so projector control has been canceled 
+	//doomed to forever print("'==================[ implement me ]=================='", false);
+	
 	// if the pressed button is in the ProjectorPopupMaster group (table) then run the code
 	if (fnGetIndex(ProjectorPopupMaster, BUTTON.INPUT.CHANNEL) != 0){
 	    print("'Button Pressed On The Projector Popup'", false);
@@ -987,12 +997,18 @@ DATA_EVENT[dvTPMaster]
 		    //if the button is an up button
 		    print("'Sending The Projector Screen Up'", false);
 		    
+		    //enable the button feedback
+		    moderoEnableButtonFeedback(BUTTON.INPUT.DEVICE, BUTTON.INPUT.CHANNEL)
+		    
 		    //send the projector screen up
 		    ON[dvRELAY, 3]
 		    
 		} else {
 		    //if the button not a up button then its a down button
 		    print("'Sending The Projector Screen Down'", false);
+		    
+		    //enable the button feedback
+		    moderoEnableButtonFeedback(BUTTON.INPUT.DEVICE, BUTTON.INPUT.CHANNEL)
 		    
 		    //send the projector screen down
 		    ON[dvRELAY, 4]
@@ -1083,13 +1099,19 @@ DATA_EVENT[dvTPMaster]
 	    if (fnGetIndex(ProjectorScreenUpButtons, BUTTON.INPUT.CHANNEL) != 0){
 		//if the button is an up button
 		print("'Stopping Sending The Projector Screen Up'", false);
-		    
+		
+		//disable the button feedback
+		moderoDisableButtonFeedback(BUTTON.INPUT.DEVICE, BUTTON.INPUT.CHANNEL)
+		
 		//Stop Sending the projector screen up
 		OFF[dvRELAY, 3]
 		
 	    } else {
 		//if the button not a up button then its a down button
 		print("'Stopping Sending The Projector Screen Down'", false);
+		
+		//disable the button feedback
+		moderoDisableButtonFeedback(BUTTON.INPUT.DEVICE, BUTTON.INPUT.CHANNEL)
 		    
 		//Stop Sending the projector screen down
 		OFF[dvRELAY, 4]
