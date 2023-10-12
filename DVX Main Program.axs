@@ -311,9 +311,9 @@ DEFINE_FUNCTION fnUpdateAudioPowerStatus()
     //run on every touch panel
     for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
 	//status light
-	moderoSetButtonFeedback(Data.Device, InsideAudioStatus[1], InsideAudioState)
-	moderoDisableButtonFeedback(Data.Device, disable)
-	moderoEnableButtonFeedback(Data.Device, enable)	
+	moderoSetButtonFeedback(dvTPMaster[x], InsideAudioStatus[1], InsideAudioState)
+	moderoDisableButtonFeedback(dvTPMaster[x], disable)
+	moderoEnableButtonFeedback(dvTPMaster[x], enable)	
     }
 	
     //outside audio
@@ -332,12 +332,12 @@ DEFINE_FUNCTION fnUpdateAudioPowerStatus()
     //run on every touch panel
     for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
 	//status light
-	moderoSetButtonFeedback(Data.Device, OutsideAudioStatus[1], OutsideAudioState)
-	moderoDisableButtonFeedback(Data.Device, disable)
-	moderoEnableButtonFeedback(Data.Device, enable)	
+	moderoSetButtonFeedback(dvTPMaster[x], OutsideAudioStatus[1], OutsideAudioState)
+	moderoDisableButtonFeedback(dvTPMaster[x], disable)
+	moderoEnableButtonFeedback(dvTPMaster[x], enable)	
     }
     
-    print("'Updating Amp Power Status'", false);
+    print("'Updated Amp Power Status'", false);
     
 }
 
@@ -673,13 +673,13 @@ DEFINE_FUNCTION fnResetSystem()
     }
     
     //update the panel status
-    fnUpdateMicButtonStatus()
+    //fnUpdateMicButtonStatus()
     
     //update audio power status
-    fnUpdateAudioPowerStatus()
+    //fnUpdateAudioPowerStatus()
     
     //update Disco Status
-    fnUpdateDiscoState()
+    //fnUpdateDiscoState()
 }
 
 (***********************************************************)
@@ -801,10 +801,14 @@ DATA_EVENT[dvTPMaster]
 	
 	//set panel passwords
 	moderoSetPageFlipPassword(Data.Device, '1', '1950')
-	//Debug Menu PAssword
+	
+	//Debug Menu Password
 	moderoSetPageFlipPassword(Data.Device, '2', '1998')
+	
+	//default unused passwords
 	moderoSetPageFlipPassword(Data.Device, '3', '1988')
 	moderoSetPageFlipPassword(Data.Device, '4', '1988')
+	
 	//pannel admin password
 	moderoSetPageFlipPassword(Data.Device, '5', '1988')
 	
