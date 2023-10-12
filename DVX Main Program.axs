@@ -134,6 +134,8 @@ INTEGER AudioPopupMaster[] = { 110, 111, 112, 113 }
 INTEGER InsideAudioStatus[] = { 200 }
 //Outside Audio Status Channel Code
 INTEGER OutsideAudioStatus[] = { 201 }
+//Disco Audio Status Channel Code
+INTEGER DiscoAudioStatus[] = { 202 }
 
 
 //Audio Popup Power Buttons
@@ -147,6 +149,15 @@ INTEGER ShutdownAbortButton[] = { 120 }
 
 //All Buttons on the Shutdown System Page ( All of the above )
 INTEGER ShutdownPopupMaster[] = { 100 }
+
+
+//disco popup power buttons
+INTEGER DiscoPopupPowerButtons[] = { 130, 131 }
+//disco popup power on buttons
+INTEGER DiscoPopupOnButtons[] = { 130 }
+
+//all of the above
+INTEGER DiscoPopupMaster[] = { 130, 131 }
 
 
 
@@ -172,26 +183,29 @@ DEFINE_TYPE
 (***********************************************************)
 DEFINE_VARIABLE
 
-//Inside Audio Current Power State
+// Inside Audio Current Power State
 // 1 is on 0 is off
 INTEGER InsideAudioState = 0 // Default to off state
 
-//Outside Audio Current Power State
+// Outside Audio Current Power State
 // 1 is on 0 is off
 INTEGER OutsideAudioState = 0 // Default to off state
 
-//The State of Mic number 1
+// The State of Mic number 1
 // 0 is inside 1 is outside
 INTEGER MicOneState = 0 // Default to inside state
 
-//The State of Mic number 2
+// The State of Mic number 2
 // 0 is inside 1 is outside
 INTEGER MicTwoState = 1 // Default to outside state
 
-//Global Projector Screen State Variable
+// Disco State
+INTEGER DiscoState = 0
+
+// Global Projector Screen State Variable
 INTEGER ProjectorScreenState = 0
 
-//console command for use in dvCom1 commands to the dgx
+// Console command for use in dvCom1 commands to the dgx
 ComCommand[40] = ''
 
 (***********************************************************)
@@ -272,25 +286,76 @@ DEFINE_FUNCTION fnResetInputFeedback(dev dvTP)
     }
 }
 
+
+DEFINE_FUNCTION fnUpdateAudioPowerStatus()
+{
+
+    //for use in for loops
+    INTEGER x
+    INTEGER enable
+    INTEGER Disable
+    
+    //inside autio
+    if (InsideAudioState){
+	//popup off button
+	enable = AudioPopupMaster[1]
+	//popup on button
+	disable = AudioPopupMaster[2]
+    } else {
+	//popup on button
+	enable = AudioPopupMaster[2]
+	//popup off button
+	disable = AudioPopupMaster[1]
+    }
+    
+    //run on every touch panel
+    for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
+	//status light
+	moderoSetButtonFeedback(Data.Device, InsideAudioStatus[1], InsideAudioState)
+	moderoDisableButtonFeedback(Data.Device, disable)
+	moderoEnableButtonFeedback(Data.Device, enable)	
+    }
+	
+    //outside audio
+    if (OutsideAudioState){
+	//popup off button
+	enable = AudioPopupMaster[3]
+	//popup on button
+	disable = AudioPopupMaster[4]
+    } else {
+	//popup on button
+	enable = AudioPopupMaster[4]
+	//popup off button
+	disable = AudioPopupMaster[3]
+    }
+    
+    //run on every touch panel
+    for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
+	//status light
+	moderoSetButtonFeedback(Data.Device, OutsideAudioStatus[1], OutsideAudioState)
+	moderoDisableButtonFeedback(Data.Device, disable)
+	moderoEnableButtonFeedback(Data.Device, enable)	
+    }
+    
+    print("'Updating Amp Power Status'", false);
+    
+}
+
 //INTEGER AudioPopupMaster[] = { 110, 111, 112, 113 }
 
 // Function for turning on or off the Inside audio
 DEFINE_FUNCTION fnSetInsideAudioPower(INTEGER State)
 {
-
-    //for use in for loops
-    INTEGER x
-    
-    // set the global state to the current state
-    InsideAudioState = State
-    
     // if the state is 1 (aka on) turn on relay 1 and stop the rest of the function from running
-    IF (State = 1) {
+    if(State) {
 	ON[dvRELAY, 1]
     } else {
 	// turn off relay 1
 	OFF[dvRELAY, 1]
     }
+    
+    // set the global state to the current state
+    InsideAudioState = State
     
     //update panel fedback
     fnUpdateAudioPowerStatus()
@@ -301,20 +366,17 @@ DEFINE_FUNCTION fnSetInsideAudioPower(INTEGER State)
 // Function for turning on or off the Outside audio
 DEFINE_FUNCTION fnSetOutsideAudioPower(INTEGER State)
 {
-
-    //for use in for loops
-    INTEGER x
-    
-    // set the global state to the current state
-    OutsideAudioState = State
     
     // if the state is 1 (aka on) turn on relay 2 and stop the rest of the function from running
-    IF (State = 1) {
+    if(State) {
 	ON[dvRELAY, 2]
     } else {
 	// turn off relay 1
 	OFF[dvRELAY, 2]
     }
+    
+    // set the global state to the current state
+    OutsideAudioState = State
     
     //update panel fedback
     fnUpdateAudioPowerStatus()
@@ -326,89 +388,50 @@ DEFINE_FUNCTION fnUpdateMicButtonStatus()
 
     //for use in for loops
     INTEGER x
+    INTEGER enable
+    INTEGER Disable
+    
+    if (MicOneState == 1){
+	//inside button feedback
+	disable = MicOutputButtons[1]
+	
+	//outside button feedback
+	enable = MicOutputButtons[2]
+    } else {
+	//outside button feedback
+	disable = MicOutputButtons[2]
+	
+	//inside button feedback
+	enable = MicOutputButtons[1]
+    }
     
     //turn the status light off on every touch pannel
     for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
-	if (MicOneState == 1){
-	    //inside button feedback
-	    moderoDisableButtonFeedback(dvTPMaster[x], MicOutputButtons[1])
-		
-	    //outside button feedback
-	    moderoEnableButtonFeedback(dvTPMaster[x], MicOutputButtons[2])
-	} else {
-	    //outside button feedback
-	    moderoDisableButtonFeedback(dvTPMaster[x], MicOutputButtons[2])
-		
-	    //inside button feedback
-	    moderoEnableButtonFeedback(dvTPMaster[x], MicOutputButtons[1])
-	}
-	
-	if (MicTwoState == 1){
-	    //inside button feedback
-	    moderoDisableButtonFeedback(dvTPMaster[x], MicOutputButtons[3])
-		
-	    //outside button feedback
-	    moderoEnableButtonFeedback(dvTPMaster[x], MicOutputButtons[4])
-	    } else {
-	    //outside button feedback
-	    moderoDisableButtonFeedback(dvTPMaster[x], MicOutputButtons[4])
-		
-	    //inside button feedback
-	    moderoEnableButtonFeedback(dvTPMaster[x], MicOutputButtons[3])
-	}
+	moderoDisableButtonFeedback(dvTPMaster[x], disable)
+	moderoEnableButtonFeedback(dvTPMaster[x], enable)
     }
-}
-
-DEFINE_FUNCTION fnUpdateAudioPowerStatus()
-{
-
-    //for use in for loops
-    INTEGER x
+    
+    if (MicTwoState == 1){
+	//inside button feedback
+	disable = MicOutputButtons[3]
+	
+	//outside button feedback
+	enable = MicOutputButtons[4]
+    } else {
+	//outside button feedback
+	disable = MicOutputButtons[4]
+	
+	//inside button feedback
+	enable = MicOutputButtons[3]
+    }
     
     //turn the status light off on every touch pannel
     for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
-	//set the panel states to current controller states
-	if (InsideAudioState == 1){
-	    //status light
-	    moderoEnableButtonFeedback(Data.Device, InsideAudioStatus[1])
-	    
-	    //popup off button
-	    moderoDisableButtonFeedback(Data.Device, AudioPopupMaster[2])
-	    
-	    //popup on button
-	    moderoEnableButtonFeedback(Data.Device, AudioPopupMaster[1])
-	} else {
-	    //status light
-	    moderoDisableButtonFeedback(Data.Device, InsideAudioStatus[1])
-	    
-	    //popup off button
-	    moderoDisableButtonFeedback(Data.Device, AudioPopupMaster[1])
-	    
-	    //popup on button
-	    moderoEnableButtonFeedback(Data.Device, AudioPopupMaster[2])
-	}
-	
-	if (OutsideAudioState == 1){
-	    //status light
-	    moderoEnableButtonFeedback(Data.Device, OutsideAudioStatus[1])
-	    
-	    //popup off button
-	    moderoDisableButtonFeedback(Data.Device, AudioPopupMaster[4])
-	    
-	    //popup on button
-	    moderoEnableButtonFeedback(Data.Device, AudioPopupMaster[3])
-	} else {
-	    //status light
-	    moderoDisableButtonFeedback(Data.Device, OutsideAudioStatus[1])
-	    
-	    //popup off button
-	    moderoDisableButtonFeedback(Data.Device, AudioPopupMaster[3])
-	    
-	    //popup on button
-	    moderoEnableButtonFeedback(Data.Device, AudioPopupMaster[4])
-	}
+	moderoDisableButtonFeedback(dvTPMaster[x], disable)
+	moderoEnableButtonFeedback(dvTPMaster[x], enable)
     }
 }
+
 
 /*
  * Function:    dvxSetAudioOutputMixLevel
@@ -541,6 +564,8 @@ DEFINE_FUNCTION INTEGER fnCalculateComCommand(dev dvTP)
 // 20 - Reserved
 // 21 - Projector Screen Rising
 // 22 - Projector Screen Lowering
+/*
+disabled as uses active press for the screen
 
 DEFINE_FUNCTION fnSetProjectorScreenState(INTEGER State)
 {
@@ -554,6 +579,53 @@ DEFINE_FUNCTION fnSetProjectorScreenState(INTEGER State)
 
 
 }
+*/
+
+DEFINE_FUNCTION fnUpdateDiscoState()
+{
+    //for use in for loops
+    INTEGER x
+    INTEGER enable
+    INTEGER disable
+    
+    if (DiscoState){
+	enable = DiscoPopupMaster[1]
+	disable = DiscoPopupMaster[2]
+    }else{
+	enable = DiscoPopupMaster[2]
+	disable = DiscoPopupMaster[1]
+    }
+    
+    
+    for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
+	moderoSetButtonFeedback(dvTPMaster[x], DiscoAudioStatus[1], DiscoState)
+	moderoDisableButtonFeedback(dvTPMaster[x], disable)
+	moderoEnableButtonFeedback(dvTPMaster[x], enable)
+    }
+}
+
+
+DEFINE_FUNCTION fnSetDiscoState(INTEGER State)
+{
+
+    //for use in for loops
+    INTEGER x
+    INTEGER enable
+    INTEGER disable
+
+    DiscoState = state
+    
+    if (State){
+	ON[dvRELAY, 5]
+	ON[dvRELAY, 6]
+    }else{
+	OFF[dvRELAY, 5]
+	OFF[dvRELAY, 6]
+    }
+    
+    fnUpdateDiscoState()
+}
+
 
 // System Reset Function
 DEFINE_FUNCTION fnResetSystem()
@@ -562,6 +634,12 @@ DEFINE_FUNCTION fnResetSystem()
     INTEGER x
 
     print("'Resetting All Systems'", false);
+    
+    //change all 5 tvs to the "news"
+    SEND_COMMAND dvCOM1, "'CL0I1O5 6 7 8 10T'"
+    
+    //set the projector to the projector input
+    SEND_COMMAND dvCOM1, "'CL0I5O9T'"
     
     // 1 is on 0 is off
     fnSetInsideAudioPower(0)
@@ -572,14 +650,14 @@ DEFINE_FUNCTION fnResetSystem()
     fnSetMicState(1, 0)
     fnSetMicState(2, 1)
     
-    //update the panel status
-    fnUpdateMicButtonStatus()
-    
-    //update audio power status
-    fnUpdateAudioPowerStatus()
+    //Set disco state
+    fnSetDiscoState(0)
 
     //for every touch panel in the table
     for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
+	//wake all panels
+	moderoWake(dvTPMaster[x])
+	
 	//reset input and output button feedback
 	fnResetInputFeedback(dvTPMaster[x])
 	fnResetOutputFeedback(dvTPMaster[x])
@@ -593,6 +671,15 @@ DEFINE_FUNCTION fnResetSystem()
 	//beep the touch panel
 	moderoBeepDouble(dvTPMaster[x])
     }
+    
+    //update the panel status
+    fnUpdateMicButtonStatus()
+    
+    //update audio power status
+    fnUpdateAudioPowerStatus()
+    
+    //update Disco Status
+    fnUpdateDiscoState()
 }
 
 (***********************************************************)
@@ -628,8 +715,8 @@ fnResetSystem()
 //html 5 web panel
 DEFINE_MODULE 'DvxSwitcherDashboard_dr1_0_0' DvxSwitcherDashboard_dr1_0_0(vdvSwitcher, dvDVXSW);
 
-// Define your communications module here like so:
-DEFINE_MODULE 'Optoma_TH1060_Comm_dr1_0_0' comm(vdvOptomaTH1060, dvOptomaTH1060);
+// projector communication module // disabled due to not controling projector
+//DEFINE_MODULE 'Optoma_TH1060_Comm_dr1_0_0' comm(vdvOptomaTH1060, dvOptomaTH1060);
 
 (***********************************************************)
 (*                THE EVENTS GO BELOW                      *)
@@ -658,6 +745,9 @@ DATA_EVENT[dvCOM1]
 //}
 
 // Detect Pulls (Changes) on the io pin 1 (Projector Screen Wall Switch [UP])
+/*
+
+disabled as out of scope of the project
 CHANNEL_EVENT[dvIO, 1]
 {
     ON:
@@ -696,12 +786,16 @@ CHANNEL_EVENT[dvIO, 2]
 	fnSetProjectorScreenState(ProjectorScreenState - 10)
     }
 }
+*/
 
 // Touch Panel Startup Program
 DATA_EVENT[dvTPMaster]
 {
     ONLINE:
     {
+	//wake panel
+	moderoWake(Data.Device)
+	
 	//setup touch panel
 	moderoDisableAllPopups(Data.Device)
 	
@@ -723,6 +817,9 @@ DATA_EVENT[dvTPMaster]
 	
 	//update audio power status
 	fnUpdateAudioPowerStatus()
+	
+	//update disco state
+	fnUpdateDiscoState()
 	
 	//enable touch panel
 	moderoSetPage(Data.Device, 'Welcome')
@@ -954,11 +1051,22 @@ DATA_EVENT[dvTPMaster]
 		//else then it was a no
 		print("'Aborting System Reset!'", false);
 		
-		print("'==================[ implement me ]=================='", false);
+		//print("'==================[ implement me ]=================='", false);
 	    }
 	}
+	
+	if (fnGetIndex(DiscoPopupMaster, BUTTON.INPUT.CHANNEL) != 0){
+        print("'Button Pressed On The Disco Popup'", false);
+
+        // if the button is in the table then its a yes
+        if (fnGetIndex(DiscoPopupOnButtons, BUTTON.INPUT.CHANNEL) != 0){
+	    fnSetDiscoState(1)
+        }else{	
+	    fnSetDiscoState(0)
+        }
     }
- 
+    }
+
     RELEASE:
     {
 	//Log what button was released on what panel
