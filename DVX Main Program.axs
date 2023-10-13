@@ -26,7 +26,7 @@ dvCOM2 = 5001:2:0	// RS-232 port 2
 dvCOM3 = 5001:3:0	// RS-232 port 3 
 dvCOM4 = 5001:4:0	// RS-232 port 4
 dvCOM5 = 5001:5:0	// RS-232 port 5 
-dvCOM6 = 5001:6:0	// RS-232 port 6
+dvCOM6 = 5001:6:0	// RS-232 port 6 //used for debug see debug include
 
 //internal switcher connection
 dvDVXSW = 5002:1:0	// Switcher
@@ -74,7 +74,7 @@ INTEGER WelcomePageMaster[] = { 1 } //WelcomePageStartButton }
 //Output Select Buttons
 INTEGER OutputButtons[] = { 11, 12, 13, 14, 15, 16 }
 //Physical Output Numbers (IN ORDER)
-INTEGER PhysicalOutputNumbers[] = { 11, 12, 5, 6, 7, 8 }
+INTEGER PhysicalOutputNumbers[] = { 9, 10, 5, 6, 7, 8 }
 
 //Input Select Buttons
 INTEGER InputButtons[] = { 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 }
@@ -464,17 +464,17 @@ DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State)
 	if (State == 1){
 	    //Switch Mic one to outside audio device here
 	    
-	    dvxSetAudioOutputMixLevel(dvSWA, 0, 2, 2)
-	    dvxSetAudioOutputMixLevel(dvSWA, 0, 2, 3)
-	    dvxSetAudioOutputMixLevel(dvSWA, 100, 2, 4)
+	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC1, DVX_MIX_OUTPUT_2_LINE)
+	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC1, DVX_MIX_OUTPUT_3_LINE)
+	    dvxSetAudioOutputMixLevel(dvDVXSW, 0, DVX_MIX_INPUT_MIC1, DVX_MIX_OUTPUT_4_LINE)
 	    
 	    print("'a'", false);
 	} else {
 	    //Switch Mic one to inside audio device here
 	    
-	    dvxSetAudioOutputMixLevel(dvSWA, 100, 2, 2)
-	    dvxSetAudioOutputMixLevel(dvSWA, 0, 2, 3)
-	    dvxSetAudioOutputMixLevel(dvSWA, 0, 2, 4)
+	    dvxSetAudioOutputMixLevel(dvDVXSW, 0, DVX_MIX_INPUT_MIC1, DVX_MIX_OUTPUT_2_LINE)
+	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC1, DVX_MIX_OUTPUT_3_LINE)
+	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC1, DVX_MIX_OUTPUT_4_LINE)
 	    
 	    print("'b'", false);
 	}
@@ -485,17 +485,17 @@ DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State)
 	if (State == 1){
 	    //Switch Mic two to outside audio device here
 	    
-	    dvxSetAudioOutputMixLevel(dvSWA, 0, 3, 2)
-	    dvxSetAudioOutputMixLevel(dvSWA, 0, 3, 3)
-	    dvxSetAudioOutputMixLevel(dvSWA, 100, 3, 4)
+	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC2, DVX_MIX_OUTPUT_2_LINE)
+	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC2, DVX_MIX_OUTPUT_3_LINE)
+	    dvxSetAudioOutputMixLevel(dvDVXSW, 0, DVX_MIX_INPUT_MIC2, DVX_MIX_OUTPUT_4_LINE)
 	    
 	    print("'c'", false);
 	} else {
 	    //Switch Mic two to inside audio device here
 	    
-	    dvxSetAudioOutputMixLevel(dvSWA, 0, 3, 2)
-	    dvxSetAudioOutputMixLevel(dvSWA, 100, 3, 3)
-	    dvxSetAudioOutputMixLevel(dvSWA, 0, 3, 4)
+	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC2, DVX_MIX_OUTPUT_2_LINE)
+	    dvxSetAudioOutputMixLevel(dvDVXSW, 0, DVX_MIX_INPUT_MIC2, DVX_MIX_OUTPUT_3_LINE)
+	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC2, DVX_MIX_OUTPUT_4_LINE)
 	    
 	    print("'d'", false);
 	}
@@ -723,6 +723,7 @@ DEFINE_MODULE 'DvxSwitcherDashboard_dr1_0_0' DvxSwitcherDashboard_dr1_0_0(vdvSwi
 (***********************************************************)
 DEFINE_EVENT
 
+//for connection to the dgx
 DATA_EVENT[dvCOM1]
 {
     online: {
@@ -733,7 +734,23 @@ DATA_EVENT[dvCOM1]
     STRING: {
 	STACK_VAR CHAR msg[16]
 	
-	SEND_STRING dvCONSOLE, "'dvCOM1 returned:', msg"
+	print("'dvCOM1 returned:', msg", false)
+    }
+}
+
+//for debug spew //connect a computer to this port and open a terminal to see the debug prints
+DATA_EVENT[dvCOM6]
+{
+    online: {
+	SEND_COMMAND dvCOM1,'SET BAUD 9600,N,8,1'
+	SEND_COMMAND dvCOM1, 'HSOFF'
+    }
+    
+    STRING: {
+	STACK_VAR CHAR msg[16]
+	
+	//heh funny loop
+	print("'dvCOM6 returned:', msg", false)
     }
 }
 
