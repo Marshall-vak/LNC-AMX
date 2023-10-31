@@ -125,7 +125,7 @@
 <SysID>0</SysID>
 <TransTCPIP>0.0.0.0</TransTCPIP>
 <TransSerial>COM1,115200,8,None,1,None</TransSerial>
-<TransTCPIPEx>192.168.50.101|1319|1|LNC DVX||</TransTCPIPEx>
+<TransTCPIPEx>192.168.1.110|1319|1| ||</TransTCPIPEx>
 <TransSerialEx>COM1|38400|8|None|1|None||</TransSerialEx>
 <TransUSBEx>|||||</TransUSBEx>
 <TransVNMEx>10.0.0.1|1|&lt;Default&gt;</TransVNMEx>
@@ -218,6 +218,12 @@
 <File CompileType="Netlinx" Type="TP4"><Identifier>LNC-AMX</Identifier>
 <FilePathName>panel\LNC-AMX.TP4</FilePathName>
 <Comments></Comments>
+<DeviceMap DevAddr="dvTp1"><DevName>dvTp1</DevName>
+</DeviceMap>
+<DeviceMap DevAddr="dvTp2"><DevName>dvTp2</DevName>
+</DeviceMap>
+<DeviceMap DevAddr="dvTp4"><DevName>dvTp4</DevName>
+</DeviceMap>
 </File>
 <File CompileType="Netlinx" Type="Other"><Identifier>ui-channel-codes</Identifier>
 <FilePathName>ui-channel-codes.txt</FilePathName>
