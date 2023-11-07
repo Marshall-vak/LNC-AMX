@@ -1,7 +1,2 @@
 DVX Relay 1 - Power Switcher for Inside Amps
 DVX Relay 2 - Power Switcher for Outside Amp
-DVX Relay 3 - Projector Screen Contacts (UP)
-DVX Relay 4 - Projector Screen Contacts (DOWN)
-
-DVX IO 1 - Projector Screen Wall Switch Pos 1 (UP)
-DVX IO 2 - Projector Screen Wall Switch Pos 2 (DOWN)
