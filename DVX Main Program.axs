@@ -72,14 +72,14 @@ INTEGER WelcomePageMaster[] = { 1 } //WelcomePageStartButton }
 
 
 //Output Select Buttons
-INTEGER OutputButtons[] = { 11, 12, 13, 14, 15, 16 }
+INTEGER OutputButtons[] = { 11, 12, 13, 14, 15, 16, 17 }
 //Physical Output Numbers (IN ORDER)
-INTEGER PhysicalOutputNumbers[] = { 9, 10, 5, 6, 7, 8 }
-
+INTEGER PhysicalOutputNumbers[] = { 9, 10, 5, 6, 7, 8, 11 }
+ 
 //Input Select Buttons
 INTEGER InputButtons[] = { 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 }
 //Physical input Numbers (IN ORDER)
-INTEGER PhysicalInputNumbers[] = { 5, 6, 7, 8, 9, 10, 11, 12, 1, 16 }
+INTEGER PhysicalInputNumbers[] = { 5, 6, 7, 8, 9, 10, 8, 9, 1, 16 }
 
 //Input / Output Master
 INTEGER InputOutputMaster[] = { 11, 12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 }
@@ -640,6 +640,9 @@ DEFINE_FUNCTION fnResetSystem()
     
     //set the projector to the projector input
     SEND_COMMAND dvCOM1, "'CL0I5O9T'"
+    
+    //set the confrence room tv to the confrence room 1 input
+    SEND_COMMAND dvCOM1, "'CL0I11O8T'"
     
     // 1 is on 0 is off
     fnSetInsideAudioPower(0)
