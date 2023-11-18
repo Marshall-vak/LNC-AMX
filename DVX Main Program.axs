@@ -93,7 +93,7 @@ INTEGER MicInsideButtons[] = { 6, 8 }
 INTEGER MicOnebuttons[] = { 6, 7 }
 
 //Button codes on the Main Page ( All of the above )
-INTEGER MainPageMaster[] = { 11, 12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 6, 7, 8, 9 }
+INTEGER MainPageMaster[] = { 11, 12, 13, 14, 15, 16, 17, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 6, 7, 8, 9 }
 
 
 //Projector Power buttons
