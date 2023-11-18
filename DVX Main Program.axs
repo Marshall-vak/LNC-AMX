@@ -82,7 +82,7 @@ INTEGER InputButtons[] = { 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 }
 INTEGER PhysicalInputNumbers[] = { 5, 6, 7, 8, 9, 10, 8, 9, 1, 16 }
 
 //Input / Output Master
-INTEGER InputOutputMaster[] = { 11, 12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 }
+INTEGER InputOutputMaster[] = { 11, 12, 13, 14, 15, 16, 17, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 }
 
 //Mic Output Buttons
 INTEGER MicOutputButtons[] = { 6, 7, 8, 9 }
