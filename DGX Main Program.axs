@@ -2,7 +2,7 @@ PROGRAM_NAME='DGX Main Program'
 
 #include 'amx-dgx-control'
 #include 'amx-dxlink-control'
-#include 'debug'
+#include 'debug-com'
 
 (***********************************************************)
 (*          DEVICE NUMBER DEFINITIONS GO BELOW             *)

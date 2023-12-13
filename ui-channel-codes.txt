@@ -34,6 +34,7 @@ address codes are the same as the channel codes unless they didnt have a channel
 Main Page
 200 - Inside Audio Status
 201 - Outside Audio Status
+202 - Audio Match Status
 
 Projector Power Prompt
 101 - Lamp Hours

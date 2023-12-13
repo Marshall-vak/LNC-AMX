@@ -79,7 +79,7 @@ INTEGER PhysicalOutputNumbers[] = { 9, 10, 5, 6, 7, 8, 11 }
 //Input Select Buttons
 INTEGER InputButtons[] = { 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 }
 //Physical input Numbers (IN ORDER)
-INTEGER PhysicalInputNumbers[] = { 5, 6, 7, 8, 9, 10, 8, 9, 1, 16 }
+INTEGER PhysicalInputNumbers[] = { 5, 10, 6, 8, 9, 10, 8, 9, 1, 16 }
 
 //Input / Output Master
 INTEGER InputOutputMaster[] = { 11, 12, 13, 14, 15, 16, 17, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 }
@@ -129,15 +129,6 @@ INTEGER AudioInsideButtons[] = { 110, 111 }
 //All Buttons on the audio popup page ( All of the above )
 INTEGER AudioPopupMaster[] = { 110, 111, 112, 113 }
 
-//Audio Power Status Channel Codes
-//Inside Audio Status Channel Code
-INTEGER InsideAudioStatus[] = { 200 }
-//Outside Audio Status Channel Code
-INTEGER OutsideAudioStatus[] = { 201 }
-//Disco Audio Status Channel Code
-INTEGER DiscoAudioStatus[] = { 202 }
-
-
 //Audio Popup Power Buttons
 INTEGER ShutDownButtons[] = { 100 }
 //When a shutdown button is pressed we can check if its in the yes table and if its not then its no
@@ -158,6 +149,25 @@ INTEGER DiscoPopupOnButtons[] = { 130 }
 
 //all of the above
 INTEGER DiscoPopupMaster[] = { 130, 131 }
+
+//Audio Settings Popup
+//Inside audio matches outside on button
+INTEGER AudioMatchingOn[] = { 140 }
+//Inside audio matches outside off button
+INTEGER AudioMatchingOff[] = { 141 }
+
+//all of the above
+INTEGER AudioSettingsPopupMaster[] = { 140, 141 }
+
+//Audio Power Status Channel Codes
+//Inside Audio Status Channel Code
+INTEGER InsideAudioStatus[] = { 200 }
+//Outside Audio Status Channel Code
+INTEGER OutsideAudioStatus[] = { 201 }
+//Audio Match Status
+INTEGER AudioMatchStatus[] = { 202 }
+//Disco Audio Status Channel Code
+INTEGER DiscoAudioStatus[] = { 203 }
 
 
 
@@ -198,6 +208,10 @@ INTEGER MicOneState = 0 // Default to inside state
 // The State of Mic number 2
 // 0 is inside 1 is outside
 INTEGER MicTwoState = 1 // Default to outside state
+
+// 1 Outside audio matches Inside
+// 0 Audio Devices are seperated
+INTEGER AudioMatchingState = 0 //Default different inside outside audio
 
 // Disco State
 INTEGER DiscoState = 0
@@ -388,8 +402,23 @@ DEFINE_FUNCTION fnUpdateMicButtonStatus()
 
     //for use in for loops
     INTEGER x
+    INTEGER y
     INTEGER enable
     INTEGER Disable
+    
+    //if audio is matched mics go to both outputs
+    if (AudioMatchingState == 1){
+	// for every touch panel
+	for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
+	    // for every mic button on every touch panel
+	    for (y=1; y<=LENGTH_ARRAY(MicOutputButtons); y++) {
+		// turn on every mic button on every touch panel
+		moderoEnableButtonFeedback(dvTPMaster[x], MicOutputButtons[y])
+	    }
+	}
+	
+	return
+    }
     
     if (MicOneState == 1){
 	//inside button feedback
@@ -468,7 +497,7 @@ DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State)
 	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC1, DVX_MIX_OUTPUT_3_LINE)
 	    dvxSetAudioOutputMixLevel(dvDVXSW, 0, DVX_MIX_INPUT_MIC1, DVX_MIX_OUTPUT_4_LINE)
 	    
-	    print("'a'", false);
+	    //print("'a'", false);
 	} else {
 	    //Switch Mic one to inside audio device here
 	    
@@ -476,7 +505,7 @@ DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State)
 	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC1, DVX_MIX_OUTPUT_3_LINE)
 	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC1, DVX_MIX_OUTPUT_4_LINE)
 	    
-	    print("'b'", false);
+	    //print("'b'", false);
 	}
 	
     } else {
@@ -489,7 +518,7 @@ DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State)
 	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC2, DVX_MIX_OUTPUT_3_LINE)
 	    dvxSetAudioOutputMixLevel(dvDVXSW, 0, DVX_MIX_INPUT_MIC2, DVX_MIX_OUTPUT_4_LINE)
 	    
-	    print("'c'", false);
+	    //print("'c'", false);
 	} else {
 	    //Switch Mic two to inside audio device here
 	    
@@ -497,12 +526,80 @@ DEFINE_FUNCTION fnSetMicState(INTEGER MicNumber, INTEGER State)
 	    dvxSetAudioOutputMixLevel(dvDVXSW, 0, DVX_MIX_INPUT_MIC2, DVX_MIX_OUTPUT_3_LINE)
 	    dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_MIC2, DVX_MIX_OUTPUT_4_LINE)
 	    
-	    print("'d'", false);
+	    //print("'d'", false);
 	}
     }
     
     //update the panel button status
     fnUpdateMicButtonStatus()
+}
+
+DEFINE_FUNCTION updateAudioMatchingStatus()
+{
+    //for use in for loops
+    INTEGER x
+    
+    //if audio matching is enabled
+    if (AudioMatchingState == 1){
+	//Enable the audio matching status light on every touch panel
+	for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
+	    moderoEnableButtonFeedback(dvTPMaster[x], AudioMatchStatus[1])
+	    moderoDisableButtonFeedback(dvTPMaster[x], AudioMatchingOff[1])
+	    moderoEnableButtonFeedback(dvTPMaster[x], AudioMatchingOn[1])
+	}
+	
+    } else {
+	//if audio matching is disabled 
+	
+	//Enable the audio matching status light on every touch panel
+	for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
+	    moderoDisableButtonFeedback(dvTPMaster[x], AudioMatchStatus[1])
+	    moderoDisableButtonFeedback(dvTPMaster[x], AudioMatchingOn[1])
+	    moderoEnableButtonFeedback(dvTPMaster[x], AudioMatchingOff[1])
+	}
+    }
+}
+
+
+DEFINE_FUNCTION INTEGER fnSetAudioMatching(INTEGER enable)
+{
+    //for use in for loops
+    INTEGER x
+
+    //if we want to turn it on
+    if (enable == 1){
+	print("'Enabling audio matching'", false);
+	
+	//Set audio matching state to true
+	AudioMatchingState = 1
+	
+	//Set Both Mics to inside
+	fnSetMicState(1, 0)
+	fnSetMicState(2, 1)
+	
+	//Enable the line audio on Outside audio Channel
+	dvxSetAudioOutputMixLevel(dvDVXSW, 0, DVX_MIX_INPUT_LINE, DVX_MIX_OUTPUT_4_LINE)
+	
+	//success
+	return 1
+    
+    } else {
+	//if we want to turn it off
+	print("'Disabling Audio Matching'", false);
+	
+	//Set audio matching state to false
+	AudioMatchingState = 0
+	
+	//Default the mics
+	fnSetMicState(1, 0)
+	fnSetMicState(2, 1)
+	
+	//Disable the line audio on Outside audio Channel
+	dvxSetAudioOutputMixLevel(dvDVXSW, -100, DVX_MIX_INPUT_LINE, DVX_MIX_OUTPUT_4_LINE)
+	
+	//success
+	return 1
+    }
 }
 
 //CL0I16O5 6 7T
@@ -655,6 +752,9 @@ DEFINE_FUNCTION fnResetSystem()
     
     //Set disco state
     fnSetDiscoState(0)
+    
+    //disable audio matching
+    fnSetAudioMatching(0)
 
     //for every touch panel in the table
     for (x=1; x<=LENGTH_ARRAY(dvTPMaster); x++) {
@@ -683,6 +783,9 @@ DEFINE_FUNCTION fnResetSystem()
     
     //update Disco Status
     //fnUpdateDiscoState()
+    
+    //update audio matching status
+    updateAudioMatchingStatus()
 }
 
 (***********************************************************)
@@ -844,6 +947,9 @@ DATA_EVENT[dvTPMaster]
 	
 	//update disco state
 	fnUpdateDiscoState()
+	
+	//update audio matching status
+	updateAudioMatchingStatus()
 	
 	//enable touch panel
 	moderoSetPage(Data.Device, 'Welcome')
@@ -1096,15 +1202,41 @@ DATA_EVENT[dvTPMaster]
 	}
 	
 	if (fnGetIndex(DiscoPopupMaster, BUTTON.INPUT.CHANNEL) != 0){
-        print("'Button Pressed On The Disco Popup'", false);
-
-        // if the button is in the table then its a yes
-        if (fnGetIndex(DiscoPopupOnButtons, BUTTON.INPUT.CHANNEL) != 0){
-	    fnSetDiscoState(1)
-        }else{	
-	    fnSetDiscoState(0)
-        }
-    }
+	    print("'Button Pressed On The Disco Popup'", false);
+	    
+	    // if the button is in the table then its a yes
+	    if (fnGetIndex(DiscoPopupOnButtons, BUTTON.INPUT.CHANNEL) != 0){
+		fnSetDiscoState(1)
+	    }else{	
+		fnSetDiscoState(0)
+	    }
+	}
+	
+	if (fnGetIndex(AudioSettingsPopupMaster, BUTTON.INPUT.CHANNEL) != 0){
+	    print("'Button Pressed On The Audio Matching Popup'", false);
+	    
+	    if (fnGetIndex(AudioMatchingOn, BUTTON.INPUT.CHANNEL) != 0){
+		print("'Audio Matching on Button Pressed'", false);
+		
+		//enable audio matching
+		if (fnSetAudioMatching(1) == 1){
+		    print("'Set audio matching to on'", false);
+		    
+		    //if it was a success update the button status
+		    updateAudioMatchingStatus()
+		}
+	    } else {
+		print("'Audio Matching off Button Pressed'", false);
+		
+		//disable audio matching
+		if (fnSetAudioMatching(0) == 1){
+		    print("'Set audio matching to off'", false);
+		    
+		    //if it was a success update the button status
+		    updateAudioMatchingStatus()
+		}
+	    }
+	}
     }
 
     RELEASE:
